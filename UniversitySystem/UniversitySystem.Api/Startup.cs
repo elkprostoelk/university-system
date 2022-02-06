@@ -1,7 +1,9 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UniversitySystem.Data;
+using UniversitySystem.Data.Repositories;
+using UniversitySystem.Services;
 
 namespace UniversitySystem.Api
 {
@@ -26,7 +31,21 @@ namespace UniversitySystem.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRouting(options => options.LowercaseUrls = true);
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+            services.AddDbContext<UniversitySystemDbContext>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddMvc();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -39,6 +58,10 @@ namespace UniversitySystem.Api
         {
             if (env.IsDevelopment())
             {
+                app.UseCors(builder => builder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin());
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UniversitySystem.Api v1"));
@@ -48,12 +71,14 @@ namespace UniversitySystem.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            app.DatabaseEnsureCreated();
         }
     }
 }
