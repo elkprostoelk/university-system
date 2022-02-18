@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -43,16 +43,17 @@ namespace UniversitySystem.Api.Controllers
                 string token = GenerateToken(user.Login, user.Id, user.Role);
                 return Ok(new { jwt = token });
             }
-            catch (UserNotFoundException e)
+            catch (UserNotFoundException)
             {
                 return NotFound();
             }
-            catch (UnauthorizedAccessException e)
+            catch (UnauthorizedAccessException)
             {
                 return Unauthorized();
             }
             catch (Exception e)
             {
+                Log.Fatal(e, "An exception occured while processing the request");
                 return StatusCode(500);
             }
         }
@@ -73,6 +74,7 @@ namespace UniversitySystem.Api.Controllers
             }
             catch (Exception e)
             {
+                Log.Fatal(e, "An exception occured while processing the request");
                 return StatusCode(500);
             }
         }
