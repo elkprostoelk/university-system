@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using UniversitySystem.Data;
 using UniversitySystem.Data.Exceptions;
@@ -51,7 +48,7 @@ namespace UniversitySystem.Services
             {
                 UserName = registerDto.UserName,
                 FirstName = registerDto.FirstName,
-                SecondName = registerDto.SecondName ?? null,
+                SecondName = registerDto.SecondName,
                 LastName = registerDto.LastName,
                 Email = registerDto.Email,
                 BirthDate = registerDto.BirthDate,
