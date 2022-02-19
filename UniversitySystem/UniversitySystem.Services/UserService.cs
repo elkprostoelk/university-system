@@ -67,6 +67,17 @@ namespace UniversitySystem.Services
             };
         }
 
+        public async Task DeleteUser(int id)
+        {
+            var user = await _userRepository.GetUser(id);
+            if (user is null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            await _userRepository.DeleteUser(user);
+        }
+
         private string HashPassword(User user, string password)
         {
             const int hashSize = 256 / 8;
