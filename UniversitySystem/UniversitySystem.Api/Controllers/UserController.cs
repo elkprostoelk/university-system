@@ -11,12 +11,12 @@ namespace UniversitySystem.Api.Controllers
     [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
-    public class AdminController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         
-        public AdminController(
+        public UserController(
             IUserService userService,
             IMapper mapper)
         {
@@ -24,7 +24,7 @@ namespace UniversitySystem.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpDelete("delete-user/{id:int}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             try
