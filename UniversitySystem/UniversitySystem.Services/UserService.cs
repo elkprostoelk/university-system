@@ -3,6 +3,7 @@ using System;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using UniversitySystem.Data;
+using UniversitySystem.Data.Entities;
 using UniversitySystem.Data.Exceptions;
 using UniversitySystem.Data.Repositories;
 using UniversitySystem.Services.Dtos;
