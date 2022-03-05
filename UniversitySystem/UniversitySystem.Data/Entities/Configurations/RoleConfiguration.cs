@@ -13,9 +13,9 @@ namespace UniversitySystem.Data.Entities.Configurations
                 .IsRequired();
 
             builder.HasData(
-                new Role { Name = "admin" },
-                new Role { Name = "student" },
-                new Role { Name = "teacher" }
+                new Role { Id = 1, Name = "admin" },
+                new Role { Id = 2, Name = "student" },
+                new Role { Id = 3, Name = "teacher" }
                 );
         }
     }
