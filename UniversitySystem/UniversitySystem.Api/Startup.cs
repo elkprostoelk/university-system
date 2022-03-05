@@ -39,6 +39,7 @@ namespace UniversitySystem.Api
                 mc.AddProfile(new MappingProfile());
             });
             IMapper mapper = mappingConfig.CreateMapper();
+            services.AddRsaAuthentication(Configuration);
             services.AddSingleton(mapper);
             services.AddDbContext<UniversitySystemDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));

@@ -35,16 +35,18 @@ namespace UniversitySystem.Services
             {
                 throw new UserNotFoundException();
             }
-            if (user.PasswordHash == hashedPassword)
+
+            if (user.PasswordHash != hashedPassword)
             {
-                return new UserDto
-                {
-                    Id = user.Id,
-                    Login = user.UserName,
-                    Role = String.Empty
-                };
+                throw new UnauthorizedAccessException();
             }
-            throw new UnauthorizedAccessException();
+            var role = await _roleRepository.GetRole(loginDto.RoleId);
+            return new UserDto
+            {
+                Id = user.Id,
+                Login = user.UserName,
+                Role = role.Name
+            };
         }
 
         public async Task<UserDto> RegisterUser(RegisterDto registerDto)

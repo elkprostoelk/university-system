@@ -19,8 +19,12 @@ namespace UniversitySystem.Api
                     bytesRead: out _);
                 return new RsaSecurityKey(rsa);
             });
-            services.AddAuthentication()
-                .AddJwtBearer("Asymmetric", options =>
+            services.AddAuthentication(auth=>
+                {
+                    auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer("Bearer", options =>
                 {
                     SecurityKey rsa = services.BuildServiceProvider().GetRequiredService<RsaSecurityKey>();
                     options.IncludeErrorDetails = true;
