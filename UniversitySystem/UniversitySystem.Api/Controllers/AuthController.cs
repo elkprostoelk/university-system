@@ -87,27 +87,6 @@ namespace UniversitySystem.Api.Controllers
             }
         }
 
-        /*[HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterModel registerModel)
-        {
-            try
-            {
-                var registerDto = _mapper.Map<RegisterDto>(registerModel);
-                var user = await _userService.RegisterUser(registerDto);
-                string token = GenerateToken(user.Login, user.Id, user.Role);
-                return Created(nameof(Register), new { jwt = token });
-            }
-            catch (UserExistsException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
-        }*/
-
         private string GenerateToken(string userName, int id, string role)
         {
             RSA rsa = RSA.Create();
