@@ -7,15 +7,20 @@ using UniversitySystem.Data.Entities;
 using UniversitySystem.Data.Exceptions;
 using UniversitySystem.Data.Repositories;
 using UniversitySystem.Services.Dtos;
+using UniversitySystem.Services.Exceptions;
 
 namespace UniversitySystem.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IClaimDecorator _claimDecorator;
+        public UserService(
+            IUserRepository userRepository,
+            IClaimDecorator claimDecorator)
         {
             _userRepository = userRepository;
+            _claimDecorator = claimDecorator;
         }
 
         public async Task<UserDto> LoginUser(LoginDto loginDto)
@@ -77,6 +82,24 @@ namespace UniversitySystem.Services
             }
 
             await _userRepository.DeleteUser(user);
+        }
+
+        public async Task ChangePassword(int id, ChangePasswordDto changePasswordDto)
+        {
+            var user = await _userRepository.GetUser(id);
+            if (_claimDecorator.Role != "admin" && user.Id != id)
+            {
+                throw new UnauthorizedAccessException();
+            }
+            var currentPassword = HashPassword(user, changePasswordDto.CurrentPassword);
+            if (currentPassword != user.PasswordHash)
+            {
+                throw new WrongPasswordException();
+            }
+
+            var newPasswordHash = HashPassword(user, changePasswordDto.NewPassword);
+            user.PasswordHash = newPasswordHash;
+            await _userRepository.UpdateUser(user);
         }
 
         private string HashPassword(User user, string password)

@@ -51,5 +51,13 @@ namespace UniversitySystem.Data.Repositories
             await _dbContext.SaveChangesAsync();
             await transaction.CommitAsync();
         }
+
+        public async Task UpdateUser(User user)
+        {
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            _dbContext.Users.Update(user);
+            await _dbContext.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
     }
 }

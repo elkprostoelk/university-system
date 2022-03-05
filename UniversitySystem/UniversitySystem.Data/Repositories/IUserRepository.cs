@@ -17,5 +17,6 @@ namespace UniversitySystem.Data.Repositories
         
         public Task<bool> UserExists(string userName);
         public Task DeleteUser(User user);
+        public Task UpdateUser(User user);
     }
 }

@@ -10,6 +10,7 @@ namespace UniversitySystem.Api
         {
             CreateMap<LoginModel, LoginDto>();
             CreateMap<RegisterModel, RegisterDto>();
+            CreateMap<ChangePasswordModel, ChangePasswordDto>();
         }
     }
 }

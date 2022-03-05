@@ -8,10 +8,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using UniversitySystem.Api.Models;
 using UniversitySystem.Data.Exceptions;
 using UniversitySystem.Services;
 using UniversitySystem.Services.Dtos;
+using UniversitySystem.Services.Exceptions;
 
 namespace UniversitySystem.Api.Controllers
 {
@@ -58,7 +60,34 @@ namespace UniversitySystem.Api.Controllers
             }
         }
 
-        [HttpPost("register")]
+        [Authorize]
+        [HttpPut("change-password/{id:int}")]
+        public async Task<IActionResult> ChangePassword(int id, ChangePasswordModel changePasswordModel)
+        {
+            try
+            {
+                var changePasswordDto = _mapper.Map<ChangePasswordDto>(changePasswordModel);
+                await _userService.ChangePassword(id, changePasswordDto);
+                return Ok();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                ModelState.AddModelError("", "Only admins can change any user's password!");
+                return BadRequest();
+            }
+            catch (WrongPasswordException e)
+            {
+                ModelState.AddModelError("", e.Message);
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "An exception occured while processing the request");
+                return StatusCode(500);
+            }
+        }
+
+        /*[HttpPost("register")]
         public async Task<IActionResult> Register(RegisterModel registerModel)
         {
             try
@@ -77,7 +106,7 @@ namespace UniversitySystem.Api.Controllers
                 Log.Fatal(e, "An exception occured while processing the request");
                 return StatusCode(500);
             }
-        }
+        }*/
 
         private string GenerateToken(string userName, int id, string role)
         {
