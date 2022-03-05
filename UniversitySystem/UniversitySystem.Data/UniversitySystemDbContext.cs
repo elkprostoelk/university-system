@@ -1,11 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using UniversitySystem.Data.Entities;
 
 namespace UniversitySystem.Data
 {
     public class UniversitySystemDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        
+        public DbSet<Role> Roles { get; set; }
+
+        public DbSet<Student> Students { get; set; }
+        
+        public DbSet<Teacher> Teachers { get; set; }
 
         public UniversitySystemDbContext(
             DbContextOptions<UniversitySystemDbContext> options) 

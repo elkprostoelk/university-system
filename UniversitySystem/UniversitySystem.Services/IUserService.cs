@@ -16,5 +16,6 @@ namespace UniversitySystem.Services
         public Task DeleteUser(int id);
         
         public Task ChangePassword(int id, ChangePasswordDto changePasswordDto);
+        public Task AddToRole(int userId, int roleId);
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace UniversitySystem.Data
+namespace UniversitySystem.Data.Entities
 {
     public class User
     {
@@ -31,5 +28,7 @@ namespace UniversitySystem.Data
         public string PasswordHash { get; set; }
 
         public string PassportNumber { get; set; }
+        
+        public ICollection<Role> Roles { get; set; }
     }
 }

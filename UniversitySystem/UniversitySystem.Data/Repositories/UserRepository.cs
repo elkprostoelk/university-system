@@ -19,7 +19,9 @@ namespace UniversitySystem.Data.Repositories
 
         public async Task<User> GetUser(int id)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _dbContext.Users
+                .Include(u => u.Roles)
+                .FirstOrDefaultAsync(u => u.Id == id);
             return user;
         }
 

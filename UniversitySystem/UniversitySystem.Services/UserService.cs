@@ -15,11 +15,15 @@ namespace UniversitySystem.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IClaimDecorator _claimDecorator;
+        private readonly IRoleRepository _roleRepository;
+
         public UserService(
             IUserRepository userRepository,
+            IRoleRepository roleRepository,
             IClaimDecorator claimDecorator)
         {
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
             _claimDecorator = claimDecorator;
         }
 
@@ -99,6 +103,23 @@ namespace UniversitySystem.Services
 
             var newPasswordHash = HashPassword(user, changePasswordDto.NewPassword);
             user.PasswordHash = newPasswordHash;
+            await _userRepository.UpdateUser(user);
+        }
+
+        public async Task AddToRole(int userId, int roleId)
+        {
+            var user = await _userRepository.GetUser(userId);
+            if (user is null)
+            {
+                throw new UserNotFoundException();
+            }
+            var role = await _roleRepository.GetRole(roleId);
+            if (role is null)
+            {
+                throw new RoleNotFoundException();
+            }
+
+            user.Roles.Add(role);
             await _userRepository.UpdateUser(user);
         }
 
