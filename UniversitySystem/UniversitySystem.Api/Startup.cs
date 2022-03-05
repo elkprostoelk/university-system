@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using UniversitySystem.Data;
 using UniversitySystem.Data.Repositories;
@@ -43,7 +44,9 @@ namespace UniversitySystem.Api
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
 
+            services.AddScoped<IClaimDecorator, ClaimDecorator>();
             services.AddScoped<IUserService, UserService>();
 
             services.AddMvc();
