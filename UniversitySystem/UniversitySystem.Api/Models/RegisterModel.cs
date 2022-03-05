@@ -10,14 +10,14 @@ namespace UniversitySystem.Api.Models
         public string UserName { get; set; }
 
         [Required]
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "First name should be less than 20 symbols!")]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "First name should be less than 20 symbols!")]
         public string FirstName { get; set; }
 
         [Required]
-        [StringLength(20, ErrorMessage = "Last name should be less than 20 symbols!")]
+        [StringLength(100, ErrorMessage = "Last name should be less than 20 symbols!")]
         public string LastName { get; set; }
 
-        [StringLength(20, ErrorMessage = "Second name should be less than 20 symbols!")]
+        [StringLength(100, ErrorMessage = "Second name should be less than 20 symbols!")]
         public string SecondName { get; set; }
 
         [Required]
