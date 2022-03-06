@@ -94,6 +94,22 @@ namespace UniversitySystem.Api.Controllers
             }
         }
 
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> EditUserInfo(int id, EditUserModel editUserModel)
+        {
+            try
+            {
+                var editUserDto = _mapper.Map<EditUserDto>(editUserModel);
+                await _userService.EditUser(id, editUserDto);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "An exception occured while processing the request");
+                return StatusCode(500);
+            }
+        }
+
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteUser(int id)
         {

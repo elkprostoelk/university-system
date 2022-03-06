@@ -3,6 +3,7 @@ using System;
 using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using AutoMapper;
 using UniversitySystem.Data;
 using UniversitySystem.Data.Entities;
 using UniversitySystem.Data.Exceptions;
@@ -17,12 +18,15 @@ namespace UniversitySystem.Services
         private readonly IUserRepository _userRepository;
         private readonly IClaimDecorator _claimDecorator;
         private readonly IRoleRepository _roleRepository;
+        private readonly IMapper _mapper;
 
         public UserService(
+            IMapper mapper,
             IUserRepository userRepository,
             IRoleRepository roleRepository,
             IClaimDecorator claimDecorator)
         {
+            _mapper = mapper;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _claimDecorator = claimDecorator;
@@ -144,6 +148,18 @@ namespace UniversitySystem.Services
                 throw new RoleNotFoundException();
             }
             user.Roles.Remove(role);
+            await _userRepository.UpdateUser(user);
+        }
+
+        public async Task EditUser(int id, EditUserDto editUserDto)
+        {
+            var user = await _userRepository.GetUser(id);
+            if (user is null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            user = _mapper.Map<User>(editUserDto);
             await _userRepository.UpdateUser(user);
         }
 
