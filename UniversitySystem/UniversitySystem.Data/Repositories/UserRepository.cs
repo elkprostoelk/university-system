@@ -36,6 +36,7 @@ namespace UniversitySystem.Data.Repositories
         public async Task<User> GetUser(string login)
         {
             var user = await _dbContext.Users
+                .Include(u => u.Roles)
                 .FirstOrDefaultAsync(u => u.UserName == login);
             return user;
         }

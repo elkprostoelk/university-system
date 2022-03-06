@@ -48,7 +48,7 @@ namespace UniversitySystem.Api.Controllers
             }
         }
 
-        [HttpPatch("{userId:int}/{roleId:int}")]
+        [HttpPatch("add-to-role/{userId:int}/{roleId:int}")]
         public async Task<IActionResult> AddToRole(int userId, int roleId)
         {
             try
@@ -70,7 +70,30 @@ namespace UniversitySystem.Api.Controllers
                 return StatusCode(500);
             }
         }
-        
+
+        [HttpPatch("delete-from-role/{userId:int}/{roleId:int}")]
+        public async Task<IActionResult> DeleteFromRole(int userId, int roleId)
+        {
+            try
+            {
+                await _userService.DeleteFromRole(userId, roleId);
+                return NoContent();
+            }
+            catch (UserNotFoundException e)
+            {
+                return NotFound(new { e.Message });
+            }
+            catch (RoleNotFoundException e)
+            {
+                return NotFound(new { e.Message });
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "An exception occured while processing the request");
+                return StatusCode(500);
+            }
+        }
+
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteUser(int id)
         {

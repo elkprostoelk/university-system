@@ -43,7 +43,7 @@ namespace UniversitySystem.Api.Controllers
                 var loginDto = _mapper.Map<LoginDto>(loginModel);
                 var user = await _userService.LoginUser(loginDto);
                 string token = GenerateToken(user.Login, user.Id, user.Role);
-                return Ok(new { jwt = token });
+                return Ok(new {jwt = token});
             }
             catch (UserNotFoundException)
             {
@@ -52,6 +52,10 @@ namespace UniversitySystem.Api.Controllers
             catch (UnauthorizedAccessException)
             {
                 return Unauthorized();
+            }
+            catch (AccessForbiddenException)
+            {
+                return Forbid();
             }
             catch (Exception e)
             {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
+using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using UniversitySystem.Data;
@@ -35,12 +36,17 @@ namespace UniversitySystem.Services
             {
                 throw new UserNotFoundException();
             }
-
+            
+            var role = await _roleRepository.GetRole(loginDto.RoleId);
+            if (!user.Roles.Contains(role))
+            {
+                throw new AccessForbiddenException();
+            }
             if (user.PasswordHash != hashedPassword)
             {
                 throw new UnauthorizedAccessException();
             }
-            var role = await _roleRepository.GetRole(loginDto.RoleId);
+            
             return new UserDto
             {
                 Id = user.Id,
@@ -122,6 +128,22 @@ namespace UniversitySystem.Services
             }
 
             user.Roles.Add(role);
+            await _userRepository.UpdateUser(user);
+        }
+
+        public async Task DeleteFromRole(int userId, int roleId)
+        {
+            var user = await _userRepository.GetUser(userId);
+            if (user is null)
+            {
+                throw new UserNotFoundException();
+            }
+            var role = await _roleRepository.GetRole(roleId);
+            if (role is null)
+            {
+                throw new RoleNotFoundException();
+            }
+            user.Roles.Remove(role);
             await _userRepository.UpdateUser(user);
         }
 
