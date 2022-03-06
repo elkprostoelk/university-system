@@ -103,6 +103,10 @@ namespace UniversitySystem.Api.Controllers
                 await _userService.EditUser(id, editUserDto);
                 return Ok();
             }
+            catch (UserNotFoundException)
+            {
+                return NotFound();
+            }
             catch (Exception e)
             {
                 Log.Fatal(e, "An exception occured while processing the request");
