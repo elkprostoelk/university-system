@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { JwtDto } from 'src/app/models/jwtDto';
+import { UserModel } from 'src/app/models/userModel';
 
 import { environment } from '../../../environments/environment';
 
@@ -23,6 +24,23 @@ export class AuthService {
       password: password,
       roleId: 1
      });
+   }
+
+   parseJwt(): UserModel | null {
+     const token = localStorage.getItem('jwt');
+     if (token) {
+      const identity = JSON.parse(atob(token.split('.')[1]));
+      const idClaim: string = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier';
+      const nameClaim: string = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
+      const roleClaim: string = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role';
+      let userModel: UserModel = {
+        id: identity[idClaim],
+        name: identity[nameClaim],
+        role: identity[roleClaim]
+       };
+       return userModel;
+     }
+     return null;
    }
 
    isSignedIn(): boolean {

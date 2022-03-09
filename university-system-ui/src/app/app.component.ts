@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserModel } from './models/userModel';
 import { AuthService } from './services/auth/auth.service';
 
 @Component({
@@ -9,11 +10,11 @@ import { AuthService } from './services/auth/auth.service';
 export class AppComponent {
   title = 'university-system-ui';
   date: Date;
-  
+  user: UserModel | null
 
   constructor(private authService: AuthService) {
     this.date = new Date();
-    
+    this.user = this.authService.parseJwt();
   }
 
   signedIn(): boolean {
