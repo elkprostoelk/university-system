@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -161,6 +163,21 @@ namespace UniversitySystem.Services
 
             user = _mapper.Map<User>(editUserDto);
             await _userRepository.UpdateUser(user);
+        }
+
+        public async Task<ICollection<RoleDto>> GetRoles(string login)
+        {
+            var user = await _userRepository.GetUser(login);
+            ICollection<RoleDto> roles = new List<RoleDto>();
+            if (user is not null)
+            {
+                roles = user.Roles.Select(r => new RoleDto
+                {
+                    Id = r.Id,
+                    Name = r.Name
+                }).ToList();
+            }
+            return roles;
         }
 
         private string HashPassword(User user, string password)

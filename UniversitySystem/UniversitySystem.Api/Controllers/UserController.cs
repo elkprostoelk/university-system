@@ -48,6 +48,22 @@ namespace UniversitySystem.Api.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet("roles/{login}")]
+        public async Task<IActionResult> GetUserRoles(string login)
+        {
+            try
+            {
+                var roles = await _userService.GetRoles(login);
+                return Ok(roles);
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "An exception occured while processing the request");
+                return StatusCode(500);
+            }
+        }
+
         [HttpPatch("add-to-role/{userId:int}/{roleId:int}")]
         public async Task<IActionResult> AddToRole(int userId, int roleId)
         {

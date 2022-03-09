@@ -22,5 +22,6 @@ namespace UniversitySystem.Services
         public Task DeleteFromRole(int userId, int roleId);
         
         public Task EditUser(int id, EditUserDto editUserDto);
+        public Task<ICollection<RoleDto>> GetRoles(string login);
     }
 }
