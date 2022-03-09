@@ -1,22 +1,16 @@
 <div class="container text-center form-signin w-50">
-    <form>
+    <form [formGroup]="loginForm" (submit)="login(loginForm.value)">
         <img class="mb-4" src="../../../favicon.ico" alt="" width="62">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
     
         <div class="form-floating">
-          <input type="text" class="form-control" id="floatingInput" placeholder="Your login">
+          <input class="form-control" type="text" id="floatingInput" formControlName="login" placeholder="Your login">
           <label for="floatingInput">Login</label>
         </div>
         <div class="form-floating">
-          <input type="password" class="form-control mb-3" id="floatingPassword" placeholder="Password">
+          <input type="password" class="form-control mb-3" id="floatingPassword" formControlName="password" placeholder="Password">
           <label for="floatingPassword">Password</label>
         </div>
-    
-        <div class="checkbox mb-3">
-          <label>
-            <input class="form-check-input" type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        <button class="w-100 btn btn-lg btn-primary">Sign in</button>
     </form>
 </div>

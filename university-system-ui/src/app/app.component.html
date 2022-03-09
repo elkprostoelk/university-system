@@ -28,11 +28,13 @@
         <li><h2 class="nav-link px-2 link-light">UNIVERSITY SYSTEM</h2></li>
       </ul>
 
-      <div class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-        <button class="btn btn-primary btn-sm" type="button" routerLink="/login">Login</button>
-      </div>
+      <ng-template #notSignedIn>
+        <div class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+          <button class="btn btn-primary btn-sm" type="button" routerLink="/login">Login</button>
+        </div>
+      </ng-template>
 
-      <div class="dropdown text-end">
+      <div class="dropdown text-end" *ngIf="signedIn(); else notSignedIn">
         <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
           <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
         </a>
@@ -41,7 +43,7 @@
           <li><a class="dropdown-item" href="#">Settings</a></li>
           <li><a class="dropdown-item" href="#">Profile</a></li>
           <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Sign out</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0)" (click)="signOut()">Sign out</a></li>
         </ul>
       </div>
     </div>
