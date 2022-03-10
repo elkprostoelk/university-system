@@ -9,14 +9,17 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AboutComponent } from './components/about/about.component';
+import { MainInfoComponent } from './components/main-info/main-info.component';
+import { TokenInterceptor } from './token-interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    AboutComponent
+    AboutComponent,
+    MainInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,9 @@ import { AboutComponent } from './components/about/about.component';
     TooltipModule.forRoot(),
     ModalModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -180,6 +180,20 @@ namespace UniversitySystem.Services
             return roles;
         }
 
+        public async Task<MainUserInfoDto> GetMainUserInfo(int userId)
+        {
+            var user = await _userRepository.GetUser(userId);
+            var mainUserInfoDto = _mapper.Map<MainUserInfoDto>(user);
+            mainUserInfoDto.FullName = string.Join(' ', user.FirstName, user.SecondName, user.LastName);
+            mainUserInfoDto.Gender = user.Gender switch
+            {
+                0 => "Male",
+                1 => "Female",
+                _ => "n/a"
+            };
+            return mainUserInfoDto;
+        }
+
         private string HashPassword(User user, string password)
         {
             const int hashSize = 256 / 8;

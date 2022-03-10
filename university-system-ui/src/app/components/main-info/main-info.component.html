@@ -1,0 +1,10 @@
+<h2>Main info</h2>
+
+Full name: {{ mainUserInfo?.fullName }}<br>
+First name: {{ mainUserInfo?.firstName }}<br>
+Second name: {{ mainUserInfo?.secondName }}<br>
+Last name: {{ mainUserInfo?.lastName }}<br>
+Gender: {{ mainUserInfo?.gender }}<br>
+Birth date: {{ mainUserInfo?.birthDate | date: 'longDate'}}<br>
+Registered on: {{ mainUserInfo?.createdDate | date: 'longDate'}}<br>
+Email: {{ mainUserInfo?.email }}

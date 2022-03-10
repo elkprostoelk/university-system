@@ -14,6 +14,7 @@ namespace UniversitySystem.Api
             CreateMap<ChangePasswordModel, ChangePasswordDto>();
             CreateMap<EditUserModel, EditUserDto>();
             CreateMap<EditUserDto, User>();
+            CreateMap<User, MainUserInfoDto>();
         }
     }
 }

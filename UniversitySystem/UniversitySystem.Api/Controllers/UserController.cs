@@ -48,6 +48,25 @@ namespace UniversitySystem.Api.Controllers
             }
         }
 
+        [HttpGet("{userId:int}")]
+        public async Task<IActionResult> GetMainUserInfo(int userId)
+        {
+            try
+            {
+                var mainUserInfoDto = await _userService.GetMainUserInfo(userId);
+                return Ok(mainUserInfoDto);
+            }
+            catch (UserNotFoundException e)
+            {
+                return NotFound(new {e.Message});
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "An exception occured while processing the request");
+                return StatusCode(500);
+            }
+        }
+
         [AllowAnonymous]
         [HttpGet("roles/{login}")]
         public async Task<IActionResult> GetUserRoles(string login)
