@@ -10,7 +10,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AboutComponent } from './components/about/about/about.component';
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
   declarations: [
