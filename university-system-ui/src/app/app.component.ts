@@ -1,4 +1,4 @@
-import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { UserModel } from './models/userModel';
 import { AuthService } from './services/auth/auth.service';
 
@@ -7,7 +7,7 @@ import { AuthService } from './services/auth/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnChanges {
+export class AppComponent {
   title = 'university-system-ui';
   date: Date;
   user: UserModel | null
@@ -17,11 +17,8 @@ export class AppComponent implements OnChanges {
     this.user = this.authService.parseJwt();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.user = this.authService.parseJwt();
-  }
-
   signedIn(): boolean {
+    this.user = this.authService.parseJwt();
     return this.authService.isSignedIn();
   }
 
