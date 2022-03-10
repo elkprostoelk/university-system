@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { UserModel } from './models/userModel';
 import { AuthService } from './services/auth/auth.service';
 
