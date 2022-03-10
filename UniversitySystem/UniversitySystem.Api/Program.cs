@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Serilog.Events;
+using Serilog.Sinks.MSSqlServer;
 
 namespace UniversitySystem.Api
 {
@@ -14,8 +16,21 @@ namespace UniversitySystem.Api
     {
         public static void Main(string[] args)
         {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var appConfiguration = new ConfigurationBuilder()
+                .AddJsonFile($"appsettings.{environment}.json", optional: false)
+                .Build();
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
+                .WriteTo.MSSqlServer(
+                    connectionString: appConfiguration.GetConnectionString("LoggerConnection"),
+                    sinkOptions: new MSSqlServerSinkOptions
+                    {
+                        TableName = "Logger",
+                        AutoCreateSqlTable = true,
+                        BatchPeriod = TimeSpan.FromSeconds(5)
+                    },
+                    restrictedToMinimumLevel: LogEventLevel.Warning)
                 .CreateLogger();
 
             Log.Information("Starting up!");
