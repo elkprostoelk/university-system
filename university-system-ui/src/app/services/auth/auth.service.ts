@@ -52,6 +52,14 @@ export class AuthService {
      return localStorage.getItem('jwt') !== null;
    }
 
+   isInRole(role: string): boolean {
+     let user = this.parseJwt();
+     if (user) {
+       return user.role === role;
+     }
+     return false;
+   }
+
    logout(): void {
      if (localStorage.getItem('jwt')) {
       localStorage.removeItem('jwt');
