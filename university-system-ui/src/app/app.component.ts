@@ -22,6 +22,10 @@ export class AppComponent {
     return this.authService.isSignedIn();
   }
 
+  isInRole(role: string): boolean {
+    return this.authService.isInRole(role);
+  }
+
   signOut(): void {
     this.authService.logout();
   }
