@@ -33,7 +33,7 @@ export class AuthService {
       const identity = JSON.parse(atob(token.split('.')[1]));
       const idClaim: string = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier';
       const nameClaim: string = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
-      const roleClaim: string = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role';
+      const roleClaim: string = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
       let userModel: UserModel = {
         id: identity[idClaim],
         name: identity[nameClaim],
