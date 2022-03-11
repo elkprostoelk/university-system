@@ -1,10 +1,22 @@
-<h2>Main info</h2>
+<h2 class="mb-3">Main info</h2>
 
-Full name: {{ mainUserInfo?.fullName }}<br>
-First name: {{ mainUserInfo?.firstName }}<br>
-Second name: {{ mainUserInfo?.secondName }}<br>
-Last name: {{ mainUserInfo?.lastName }}<br>
-Gender: {{ mainUserInfo?.gender }}<br>
-Birth date: {{ mainUserInfo?.birthDate | date: 'longDate'}}<br>
-Registered on: {{ mainUserInfo?.createdDate | date: 'longDate'}}<br>
-Email: {{ mainUserInfo?.email }}
+<div class="card w-50">
+    <div class="card-body">
+      <div class="card-text" *ngIf="mainUserInfo; else loading">
+        <div class="row mb-3"><div class="col">Full name:</div> <div class="col">{{ mainUserInfo?.fullName }}</div></div>
+        <div class="row mb-3"><div class="col">First name:</div> <div class="col">{{ mainUserInfo?.firstName }}</div></div>
+        <div class="row mb-3"><div class="col">Second name:</div> <div class="col">{{ mainUserInfo?.secondName }}</div></div>
+        <div class="row mb-3"><div class="col">Last name:</div> <div class="col">{{ mainUserInfo?.lastName }}</div></div>
+        <div class="row mb-3"><div class="col">Gender:</div> <div class="col">{{ mainUserInfo?.gender }}</div></div>
+        <div class="row mb-3"><div class="col">Birth date:</div> <div class="col">{{ mainUserInfo?.birthDate | date: 'longDate'}}</div></div>
+        <div class="row mb-3"><div class="col">Registered on:</div> <div class="col">{{ mainUserInfo?.createdDate | date: 'longDate'}}</div></div>
+        <div class="row mb-3"><div class="col">Email:</div> <div class="col">{{ mainUserInfo?.email }}</div></div>
+      </div>
+      <ng-template #loading class="card-text">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+      </ng-template>
+    </div>
+</div>
+
