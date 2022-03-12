@@ -13,13 +13,15 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AboutComponent } from './components/about/about.component';
 import { MainInfoComponent } from './components/main-info/main-info.component';
 import { TokenInterceptor } from './token-interceptor';
+import { AdminComponent } from './components/admin/admin.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     AboutComponent,
-    MainInfoComponent
+    MainInfoComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

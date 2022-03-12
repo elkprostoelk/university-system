@@ -34,8 +34,12 @@
         </div>
       </ng-template>
 
+      <div class="d-block" *ngIf="isInRole('admin')">
+        <button class="btn btn-primary btn-sm" type="button" routerLink="/admin">Admin panel</button>
+      </div>
+
       <div class="dropdown text-end" *ngIf="signedIn(); else notSignedIn">
-        <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+        <a href="#" class="d-block link-light text-decoration-none dropdown-toggle marg-left" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
           {{ user?.name }}
           <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
         </a>
