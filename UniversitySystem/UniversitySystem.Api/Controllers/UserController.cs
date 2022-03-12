@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -12,7 +11,6 @@ using UniversitySystem.Services.Dtos;
 
 namespace UniversitySystem.Api.Controllers
 {
-    [Authorize(Roles = "admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -28,6 +26,7 @@ namespace UniversitySystem.Api.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> RegisterUser(RegisterModel registerModel)
         {
@@ -48,6 +47,7 @@ namespace UniversitySystem.Api.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("{userId:int}")]
         public async Task<IActionResult> GetMainUserInfo(int userId)
         {
@@ -67,7 +67,6 @@ namespace UniversitySystem.Api.Controllers
             }
         }
 
-        [AllowAnonymous]
         [HttpGet("roles/{login}")]
         public async Task<IActionResult> GetUserRoles(string login)
         {
@@ -83,6 +82,7 @@ namespace UniversitySystem.Api.Controllers
             }
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPatch("add-to-role/{userId:int}/{roleId:int}")]
         public async Task<IActionResult> AddToRole(int userId, int roleId)
         {
@@ -106,6 +106,7 @@ namespace UniversitySystem.Api.Controllers
             }
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPatch("delete-from-role/{userId:int}/{roleId:int}")]
         public async Task<IActionResult> DeleteFromRole(int userId, int roleId)
         {
@@ -129,6 +130,7 @@ namespace UniversitySystem.Api.Controllers
             }
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> EditUserInfo(int id, EditUserModel editUserModel)
         {
@@ -149,6 +151,7 @@ namespace UniversitySystem.Api.Controllers
             }
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
