@@ -194,6 +194,18 @@ namespace UniversitySystem.Services
             return mainUserInfoDto;
         }
 
+        public async Task<ICollection<UserForAdminPanelDto>> GetAllUsers()
+        {
+            var users = await _userRepository.GetAllUsers();
+            var userForAdminPanelDtos = users.Select(u =>
+            {
+                var dto = _mapper.Map<UserForAdminPanelDto>(u);
+                dto.FullName = string.Join(' ', u.LastName, u.FirstName, u.SecondName);
+                return dto;
+            }).ToList();
+            return userForAdminPanelDtos;
+        }
+
         private string HashPassword(User user, string password)
         {
             const int hashSize = 256 / 8;

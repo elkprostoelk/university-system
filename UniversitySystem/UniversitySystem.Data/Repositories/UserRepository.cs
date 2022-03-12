@@ -62,5 +62,11 @@ namespace UniversitySystem.Data.Repositories
             await _dbContext.SaveChangesAsync();
             await transaction.CommitAsync();
         }
+
+        public async Task<ICollection<User>> GetAllUsers()
+        {
+            var users = await _dbContext.Users.ToListAsync();
+            return users;
+        }
     }
 }

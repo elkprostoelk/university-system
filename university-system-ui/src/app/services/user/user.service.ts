@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MainUserInfoDto } from 'src/app/models/mainUserInfoDto';
+import { UserForAdminPanelDto } from 'src/app/models/userForAdminPanelDto';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -17,5 +18,9 @@ export class UserService {
 
    getMainUserInfo(userId: number): Observable<MainUserInfoDto> {
      return this.http.get<MainUserInfoDto>(environment.apiPath + this.userPath + userId);
+   }
+
+   getAllUsers(): Observable<UserForAdminPanelDto[]> {
+     return this.http.get<UserForAdminPanelDto[]>(environment.apiPath + this.userPath + 'all');
    }
 }

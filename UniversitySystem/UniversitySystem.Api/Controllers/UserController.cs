@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -39,6 +40,22 @@ namespace UniversitySystem.Api.Controllers
             catch (UserExistsException e)
             {
                 return BadRequest(e.Message);
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "An exception occured while processing the request");
+                return StatusCode(500);
+            }
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var allUsers = await _userService.GetAllUsers();
+                return Ok(allUsers);
             }
             catch (Exception e)
             {
