@@ -32,6 +32,29 @@
 
 <h4 class="mb-3">Roles</h4>
 
+<button type="button" class="btn btn-sm btn-success mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Add
+</button>
+  
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" [formGroup]="createRoleForm" (submit)="createRole(createRoleForm.value)">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Add new role</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label for="roleName">Role name</label>
+                <input class="form-control" type="text" formControlName="roleName" id="roleName">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary" data-bs-dismiss="modal">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="card w-50 mb-3">
     <div class="card-body">
         <div class="card-text" *ngIf="roleDtos; else loading">

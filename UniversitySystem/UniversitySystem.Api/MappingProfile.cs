@@ -17,6 +17,7 @@ namespace UniversitySystem.Api
             CreateMap<User, MainUserInfoDto>();
             CreateMap<User, UserForAdminPanelDto>();
             CreateMap<Role, RoleDto>();
+            CreateMap<NewRoleModel, NewRoleDto>();
         }
     }
 }

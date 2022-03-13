@@ -33,5 +33,18 @@ namespace UniversitySystem.Data.Repositories
             await _dbContext.SaveChangesAsync();
             await transaction.CommitAsync();
         }
+
+        public async Task AddRole(Role newRole)
+        {
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            await _dbContext.Roles.AddAsync(newRole);
+            await _dbContext.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
+
+        public async Task<bool> RoleExists(string roleName)
+        {
+            return await _dbContext.Roles.AnyAsync(r => r.Name == roleName);
+        }
     }
 }

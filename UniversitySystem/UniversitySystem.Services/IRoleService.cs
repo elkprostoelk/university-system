@@ -9,5 +9,6 @@ namespace UniversitySystem.Services
         public Task<ICollection<RoleDto>> GetAllRoles();
         
         public Task DeleteRole(int roleId);
+        public Task CreateRole(NewRoleDto newRoleDto);
     }
 }

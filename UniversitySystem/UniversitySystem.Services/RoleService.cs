@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using UniversitySystem.Data.Entities;
 using UniversitySystem.Data.Exceptions;
 using UniversitySystem.Data.Repositories;
 using UniversitySystem.Services.Dtos;
@@ -43,6 +44,19 @@ namespace UniversitySystem.Services
             }
 
             await _roleRepository.DeleteRole(role);
+        }
+
+        public async Task CreateRole(NewRoleDto newRoleDto)
+        {
+            var newRole = new Role
+            {
+                Name = newRoleDto.RoleName
+            };
+            if (await _roleRepository.RoleExists(newRole.Name))
+            {
+                throw new RoleExistsException();
+            }
+            await _roleRepository.AddRole(newRole);
         }
     }
 }
