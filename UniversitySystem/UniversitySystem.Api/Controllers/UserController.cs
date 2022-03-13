@@ -177,6 +177,14 @@ namespace UniversitySystem.Api.Controllers
                 await _userService.DeleteUser(id);
                 return NoContent();
             }
+            catch (UserNotFoundException e)
+            {
+                return BadRequest(new {e.Message});
+            }
+            catch (SelfDeletingException e)
+            {
+                return BadRequest(new {e.Message});
+            }
             catch (Exception e)
             {
                 Log.Fatal(e, "An exception occured while processing the request");

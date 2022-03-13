@@ -23,4 +23,8 @@ export class UserService {
    getAllUsers(): Observable<UserForAdminPanelDto[]> {
      return this.http.get<UserForAdminPanelDto[]>(environment.apiPath + this.userPath + 'all');
    }
+
+   deleteUser(userId: number): Observable<void> {
+     return this.http.delete<void>(environment.apiPath + this.userPath + userId);
+   }
 }

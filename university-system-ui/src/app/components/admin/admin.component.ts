@@ -27,4 +27,11 @@ export class AdminComponent implements OnInit {
     return this.authService.parseJwt()?.name === username;
   }
 
+  deleteUser(userId: number): void {
+    if (confirm("Are you sure to delete this user? It couldn't be reverted!")) {
+      this.userService.deleteUser(userId)
+        .subscribe();
+    }
+  }
+
 }

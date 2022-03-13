@@ -1,5 +1,5 @@
 <h2 class="mb-3">Welcome to the Admin Panel!</h2>
-<h4 class="mb-3">Users and roles</h4>
+<h4 class="mb-3">Users and their roles</h4>
 <div class="card w-50 mb-3">
     <div class="card-body">
         <div class="card-text" *ngIf="userDtos; else loading">
@@ -17,7 +17,7 @@
                 <div class="col">
                     <div class="d-grid gap-2 d-md-flex">
                         <button class="btn btn-sm btn-warning" type="button">Edit</button>
-                        <button class="btn btn-sm btn-danger" type="button" [disabled]="isMe(user.userName)">Delete</button>
+                        <button class="btn btn-sm btn-danger" type="button" [disabled]="isMe(user.userName)" (click)="deleteUser(user.id)">Delete</button>
                     </div>
                 </div>
             </div>

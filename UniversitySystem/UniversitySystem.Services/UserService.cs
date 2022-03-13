@@ -93,6 +93,10 @@ namespace UniversitySystem.Services
 
         public async Task DeleteUser(int id)
         {
+            if (_claimDecorator.Id == id)
+            {
+                throw new SelfDeletingException();
+            }
             var user = await _userRepository.GetUser(id);
             if (user is null)
             {
