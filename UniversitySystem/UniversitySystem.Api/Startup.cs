@@ -49,6 +49,7 @@ namespace UniversitySystem.Api
 
             services.AddScoped<IClaimDecorator, ClaimDecorator>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             services.AddMvc();
             services.AddControllers();

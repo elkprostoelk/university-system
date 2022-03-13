@@ -29,3 +29,32 @@
         </ng-template>
     </div>
 </div>
+
+<h4 class="mb-3">Roles</h4>
+
+<div class="card w-50 mb-3">
+    <div class="card-body">
+        <div class="card-text" *ngIf="roleDtos; else loading">
+            <div class="row mb-3">
+                <div class="col fw-bolder">Role Id</div>
+                <div class="col fw-bolder">Role Name</div>
+                <div class="col fw-bolder">Operations</div>
+            </div>
+            <div class="row mb-3" *ngFor="let role of roleDtos">
+                <div class="col">{{role.id}}</div>
+                <div class="col">{{role.name}}</div>
+                <div class="col">
+                    <div class="d-grid gap-2 d-md-flex">
+                        <button class="btn btn-sm btn-warning" type="button">Edit</button>
+                        <button class="btn btn-sm btn-danger" type="button" [disabled]="role.name === 'admin'" (click)="deleteRole(role.id)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-template #loading class="card-text">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </ng-template>
+    </div>
+</div>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { RoleDto } from 'src/app/models/roleDto';
 import { UserForAdminPanelDto } from 'src/app/models/userForAdminPanelDto';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { RoleService } from 'src/app/services/role/role.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -11,9 +13,11 @@ import { UserService } from 'src/app/services/user/user.service';
 export class AdminComponent implements OnInit {
 
   userDtos?: UserForAdminPanelDto[]
+  roleDtos?: RoleDto[]
   constructor(
     private userService: UserService,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private roleService: RoleService) {
 
    }
 
@@ -21,6 +25,9 @@ export class AdminComponent implements OnInit {
     this.userService.getAllUsers()
       .subscribe(data =>
         this.userDtos = data);
+        this.roleService.getAllRoles()
+        .subscribe(data =>
+          this.roleDtos = data);
   }
 
   isMe(username: string): boolean {
@@ -30,6 +37,13 @@ export class AdminComponent implements OnInit {
   deleteUser(userId: number): void {
     if (confirm("Are you sure to delete this user? It couldn't be reverted!")) {
       this.userService.deleteUser(userId)
+        .subscribe();
+    }
+  }
+
+  deleteRole(roleId: number): void {
+    if (confirm("Are you sure to delete this role? It couldn't be reverted!")) {
+      this.roleService.deleteRole(roleId)
         .subscribe();
     }
   }
