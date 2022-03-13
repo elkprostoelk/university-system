@@ -1,12 +1,13 @@
 <h2 class="mb-3">Welcome to the Admin Panel!</h2>
 <h4 class="mb-3">Users and roles</h4>
-<div class="card w-50">
+<div class="card w-50 mb-3">
     <div class="card-body">
         <div class="card-text" *ngIf="userDtos; else loading">
             <div class="row mb-3">
                 <div class="col fw-bolder">User Name</div>
                 <div class="col fw-bolder">Full Name</div>
                 <div class="col fw-bolder">Registered on</div>
+                <div class="col fw-bolder">Operations</div>
             </div>
             <div class="row mb-3" *ngFor="let user of userDtos">
                 <input type="hidden" [value]="user.id">
