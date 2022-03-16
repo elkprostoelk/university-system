@@ -1,12 +1,12 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { JwtDto } from 'src/app/models/jwtDto';
-import { RoleDto } from 'src/app/models/roleDto';
-import { UserModel } from 'src/app/models/userModel';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {JwtDto} from 'src/app/models/jwtDto';
+import {RoleDto} from 'src/app/models/roleDto';
+import {UserModel} from 'src/app/models/userModel';
 
-import { environment } from '../../../environments/environment';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -34,12 +34,17 @@ export class AuthService {
       const idClaim: string = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier';
       const nameClaim: string = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
       const roleClaim: string = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
-      let userModel: UserModel = {
-        id: identity[idClaim],
-        name: identity[nameClaim],
-        role: identity[roleClaim]
+      const expires: Date = new Date(0);
+      expires.setUTCSeconds(identity['exp']);
+      if (expires < new Date()) {
+        localStorage.removeItem('jwt');
+        return null;
+      }
+       return {
+         id: identity[idClaim],
+         name: identity[nameClaim],
+         role: identity[roleClaim]
        };
-       return userModel;
      }
      return null;
    }
