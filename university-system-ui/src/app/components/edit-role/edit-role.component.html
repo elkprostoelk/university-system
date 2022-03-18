@@ -1,0 +1,30 @@
+<h2>Edit role</h2>
+<form [formGroup]="editRoleForm" class="card w-50 mb-3" (submit)="editRole(editRoleForm.value)">
+  <div class="card-body">
+    <div class="card-text mb-3">
+      <input type="hidden">
+      <label for="roleName">Role name</label>
+      <input class="form-control mb-3" type="text" formControlName="name" id="roleName" value="{{(role$ | async)?.name}}">
+    </div>
+    <div class="card-text mb-3">
+      <button class="btn btn-primary" [disabled]="editRoleForm.invalid">Edit</button>
+    </div>
+  </div>
+</form>
+
+<h2>Users with this role</h2>
+
+<div class="card w-50 mb-3">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-3"><strong>User name</strong></div>
+      <div class="col"><strong>Operations</strong></div>
+    </div>
+    <div class="card-text mb-3 row" *ngFor="let user of (role$ | async)?.users">
+      <div class="col-3">{{ user.name }}</div>
+      <div class="col">
+        <button class="btn btn-danger btn-sm" type="button" (click)="deleteUserFromRole(id, user.id)">Delete from role</button>
+      </div>
+    </div>
+  </div>
+</div>
