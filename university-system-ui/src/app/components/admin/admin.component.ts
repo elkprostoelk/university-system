@@ -14,6 +14,7 @@ import { UserService } from 'src/app/services/user/user.service';
 export class AdminComponent implements OnInit {
   createRoleForm: FormGroup
   createUserForm: FormGroup
+  addToRoleForm: FormGroup
   userDtos?: UserForAdminPanelDto[]
   roleDtos?: RoleDto[]
   constructor(
@@ -21,26 +22,33 @@ export class AdminComponent implements OnInit {
     private authService: AuthService,
     private roleService: RoleService,
     private builder: FormBuilder) {
-    this.createUserForm = this.builder.group({
-      userName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-      firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-      secondName: ['', Validators.maxLength(100)],
-      lastName: ['', [Validators.required, Validators.maxLength(100)]],
-      gender: ['', Validators.required],
-      birthDate: ['', Validators.required],
-      email: [''],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
-      passportNumber: ['', Validators.required]
-    });
+      this.createUserForm = this.builder.group({
+        userName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+        firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+        secondName: ['', Validators.maxLength(100)],
+        lastName: ['', [Validators.required, Validators.maxLength(100)]],
+        gender: ['', Validators.required],
+        birthDate: ['', Validators.required],
+        email: [''],
+        password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
+        passportNumber: ['', Validators.required]
+      });
       this.createRoleForm = this.builder.group({
         roleName: ['', Validators.required]
+      });
+      this.addToRoleForm = this.builder.group({
+        userToAdd: ['', Validators.required],
+        roleToAdd: ['', Validators.required]
       });
    }
 
   ngOnInit(): void {
     this.userService.getAllUsers()
-      .subscribe(data =>
-        this.userDtos = data);
+      .subscribe(data => {
+        this.userDtos = data;
+        this.userDtos.sort((a, b) =>
+          a.fullName.localeCompare(b.fullName));
+      });
     this.roleService.getAllRoles()
     .subscribe(data =>
       this.roleDtos = data);
@@ -78,5 +86,12 @@ export class AdminComponent implements OnInit {
   createUser(value: any): void {
     this.userService.createUser(value)
       .subscribe();
+  }
+
+  addUserToRole(value: any): void {
+    this.userService.addUserToRole(value.userToAdd, value.roleToAdd)
+      .subscribe(data => {}, (err) => {
+        alert(err.error.message);
+      });
   }
 }

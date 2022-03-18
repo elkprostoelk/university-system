@@ -111,11 +111,15 @@ namespace UniversitySystem.Api.Controllers
             }
             catch (UserNotFoundException e)
             {
-                return NotFound(new { e.Message });
+                return NotFound(new {e.Message});
             }
             catch (RoleNotFoundException e)
             {
-                return NotFound(new { e.Message });
+                return NotFound(new {e.Message});
+            }
+            catch (UserHasRoleException e)
+            {
+                return BadRequest(new {e.Message});
             }
             catch (Exception e)
             {

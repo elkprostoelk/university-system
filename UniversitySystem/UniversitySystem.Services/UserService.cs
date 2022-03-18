@@ -133,6 +133,10 @@ namespace UniversitySystem.Services
                 throw new RoleNotFoundException();
             }
 
+            if (user.Roles.Contains(role))
+            {
+                throw new UserHasRoleException();
+            }
             user.Roles.Add(role);
             await _userRepository.UpdateUser(user);
         }

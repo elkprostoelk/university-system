@@ -1,9 +1,14 @@
 <h2 class="mb-3">Welcome to the Admin Panel!</h2>
 <h4 class="mb-3">Users</h4>
 
-<button type="button" class="btn btn-sm btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addUser">
-  Add
-</button>
+<div class="d-grid gap-2 d-md-flex">
+  <button class="btn btn-sm btn-success mb-3" type="button" data-bs-toggle="modal" data-bs-target="#addUser">
+    Add
+  </button>
+  <button class="btn btn-sm btn-info mb-3" type="button" data-bs-toggle="modal" data-bs-target="#addToRole">
+    Add to role
+  </button>
+</div>
 
 <div class="modal fade" id="addUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -39,6 +44,31 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button class="btn btn-primary" data-bs-dismiss="modal" [disabled]="createUserForm.invalid">Create</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="addToRole" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addToRoleLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" [formGroup]="addToRoleForm" (submit)="addUserToRole(addToRoleForm.value)">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addToRoleLabel">Add the user to a role</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="userToAdd">Select a user:</label>
+        <select class="form-select mb-3" size="3" id="userToAdd" formControlName="userToAdd">
+          <option value="{{user.id}}" *ngFor="let user of userDtos">{{user.fullName}}</option>
+        </select>
+        <label for="roleToAdd">Select a role:</label>
+        <select class="form-select mb-3" size="3" id="roleToAdd" formControlName="roleToAdd">
+          <option value="{{role.id}}" *ngFor="let role of roleDtos">{{role.name}}</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary" data-bs-dismiss="modal" [disabled]="addToRoleForm.invalid">Add to role</button>
       </div>
     </form>
   </div>

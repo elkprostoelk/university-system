@@ -45,4 +45,8 @@ export class UserService {
       passportNumber: value.passportNumber
     });
   }
+
+  addUserToRole(userId: number, roleId: number): Observable<void> {
+    return this.http.patch<void>(`${environment.apiPath}${this.userPath}add-to-role/${userId}/${roleId}`, {})
+  }
 }
