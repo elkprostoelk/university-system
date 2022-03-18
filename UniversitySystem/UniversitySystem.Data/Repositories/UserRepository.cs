@@ -65,7 +65,9 @@ namespace UniversitySystem.Data.Repositories
 
         public async Task<ICollection<User>> GetAllUsers()
         {
-            var users = await _dbContext.Users.ToListAsync();
+            var users = await _dbContext.Users
+                .Include(u => u.Roles)
+                .ToListAsync();
             return users;
         }
     }

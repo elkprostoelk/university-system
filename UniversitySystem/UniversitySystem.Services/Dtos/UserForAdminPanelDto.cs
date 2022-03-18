@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace UniversitySystem.Services.Dtos
 {
@@ -11,5 +12,7 @@ namespace UniversitySystem.Services.Dtos
         public string FullName { get; set; }
         
         public DateTime CreatedDate { get; set; }
+        
+        public ICollection<string> Roles { get; set; }
     }
 }
