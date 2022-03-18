@@ -44,13 +44,9 @@ namespace UniversitySystem.Services
             }
             
             var role = await _roleRepository.GetRole(loginDto.RoleId);
-            if (!user.Roles.Contains(role))
+            if (!user.Roles.Contains(role) || user.PasswordHash != hashedPassword)
             {
                 throw new AccessForbiddenException();
-            }
-            if (user.PasswordHash != hashedPassword)
-            {
-                throw new UnauthorizedAccessException();
             }
             
             return new UserDto

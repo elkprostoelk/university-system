@@ -49,10 +49,6 @@ namespace UniversitySystem.Api.Controllers
             {
                 return NotFound();
             }
-            catch (UnauthorizedAccessException)
-            {
-                return Unauthorized();
-            }
             catch (AccessForbiddenException)
             {
                 return Forbid();
