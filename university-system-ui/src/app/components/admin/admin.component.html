@@ -1,5 +1,5 @@
 <h2 class="mb-3">Welcome to the Admin Panel!</h2>
-<h4 class="mb-3">Users and their roles</h4>
+<h4 class="mb-3">Users</h4>
 <div class="card w-50 mb-3">
     <div class="card-body">
         <div class="card-text" *ngIf="userDtos; else loading">
@@ -9,18 +9,29 @@
                 <div class="col fw-bolder">Registered on</div>
                 <div class="col fw-bolder">Operations</div>
             </div>
-            <div class="row mb-3" *ngFor="let user of userDtos">
-                <input type="hidden" [value]="user.id">
-                <div class="col">{{user.userName}}</div>
-                <div class="col">{{user.fullName}}</div>
-                <div class="col">{{user.createdDate | date: 'medium'}}</div>
-                <div class="col">
-                    <div class="d-grid gap-2 d-md-flex">
-                        <button class="btn btn-sm btn-warning" type="button">Edit</button>
-                        <button class="btn btn-sm btn-danger" type="button" [disabled]="isMe(user.userName)" (click)="deleteUser(user.id)">Delete</button>
-                    </div>
+          <div *ngFor="let user of userDtos">
+            <div class="row mb-3">
+              <input type="hidden" [value]="user.id">
+              <div class="col">{{user.userName}}</div>
+              <div class="col">{{user.fullName}}</div>
+              <div class="col">{{user.createdDate | date: 'medium'}}</div>
+              <div class="col">
+                <div class="d-grid gap-2 d-md-flex">
+                  <button class="btn btn-sm btn-warning" type="button">Edit</button>
+                  <button class="btn btn-sm btn-danger" type="button" [disabled]="isMe(user.userName)" (click)="deleteUser(user.id)">Delete</button>
                 </div>
+              </div>
             </div>
+            <span class="col mb-3"><strong>Roles:</strong></span>
+            <ul type="circle">
+              <li class="row mb-3" *ngFor="let role of user.roles">
+                <span class="col mb-3">&nbsp;</span>
+                <span class="col mb-3">&ndash; {{role}}</span>
+                <span class="col mb-3">&nbsp;</span>
+                <span class="col mb-3">&nbsp;</span>
+              </li>
+            </ul>
+          </div>
         </div>
         <ng-template #loading class="card-text">
             <div class="spinner-border" role="status">

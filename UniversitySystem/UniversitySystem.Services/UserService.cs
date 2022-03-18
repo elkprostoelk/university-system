@@ -209,6 +209,7 @@ namespace UniversitySystem.Services
             {
                 var dto = _mapper.Map<UserForAdminPanelDto>(u);
                 dto.FullName = string.Join(' ', u.LastName, u.FirstName, u.SecondName);
+                dto.Roles = u.Roles.Select(r => r.Name).ToList();
                 return dto;
             }).ToList();
             return userForAdminPanelDtos;
