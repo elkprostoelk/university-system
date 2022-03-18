@@ -1,5 +1,49 @@
 <h2 class="mb-3">Welcome to the Admin Panel!</h2>
 <h4 class="mb-3">Users</h4>
+
+<button type="button" class="btn btn-sm btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addUser">
+  Add
+</button>
+
+<div class="modal fade" id="addUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" [formGroup]="createUserForm" (submit)="createUser(createUserForm.value)">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUserLabel">Add new user</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="firstName">User name</label>
+        <input class="form-control mb-3" type="text" formControlName="userName" id="userName">
+        <label for="firstName">First name</label>
+        <input class="form-control mb-3" type="text" formControlName="firstName" id="firstName">
+        <label for="secondName">Second name</label>
+        <input class="form-control mb-3" type="text" formControlName="secondName" id="secondName">
+        <label for="lastName">Last name</label>
+        <input class="form-control mb-3" type="text" formControlName="lastName" id="lastName">
+        <label for="gender">Gender</label>
+        <select class="form-select mb-3" formControlName="gender" id="gender">
+          <option value disabled selected>Select a gender:</option>
+          <option value="0">Male</option>
+          <option value="1">Female</option>
+        </select>
+        <label for="birthDate">Birth date</label>
+        <input class="form-control mb-3" type="date" formControlName="birthDate" id="birthDate">
+        <label for="email">Email</label>
+        <input class="form-control mb-3" type="email" formControlName="email" id="email">
+        <label for="password">Password</label>
+        <input class="form-control mb-3" type="password" formControlName="password" id="password">
+        <label for="passportNumber">Passport number</label>
+        <input class="form-control mb-3" type="text" formControlName="passportNumber" id="passportNumber">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary" data-bs-dismiss="modal" [disabled]="createUserForm.invalid">Create</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="card w-50 mb-3">
     <div class="card-body">
         <div class="card-text" *ngIf="userDtos; else loading">
