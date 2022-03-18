@@ -9,6 +9,7 @@ using UniversitySystem.Api.Models;
 using UniversitySystem.Data.Exceptions;
 using UniversitySystem.Services;
 using UniversitySystem.Services.Dtos;
+using UniversitySystem.Services.Exceptions;
 
 namespace UniversitySystem.Api.Controllers
 {
@@ -134,11 +135,15 @@ namespace UniversitySystem.Api.Controllers
             }
             catch (UserNotFoundException e)
             {
-                return NotFound(new { e.Message });
+                return NotFound(new {e.Message});
             }
             catch (RoleNotFoundException e)
             {
-                return NotFound(new { e.Message });
+                return NotFound(new {e.Message});
+            }
+            catch (SingleRoleException e)
+            {
+                return BadRequest(new {e.Message});
             }
             catch (Exception e)
             {

@@ -149,8 +149,16 @@ namespace UniversitySystem.Services
             {
                 throw new RoleNotFoundException();
             }
-            user.Roles.Remove(role);
-            await _userRepository.UpdateUser(user);
+
+            if (user.Roles.Count > 1)
+            {
+                user.Roles.Remove(role);
+                await _userRepository.UpdateUser(user);
+            }
+            else
+            {
+                throw new SingleRoleException();
+            }
         }
 
         public async Task EditUser(int id, EditUserDto editUserDto)

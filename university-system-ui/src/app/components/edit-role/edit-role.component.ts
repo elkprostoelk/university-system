@@ -5,6 +5,7 @@ import {RoleService} from "../../services/role/role.service";
 import {RoleDto} from "../../models/roleDto";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user/user.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-edit-role',
@@ -40,7 +41,9 @@ export class EditRoleComponent implements OnInit {
   deleteUserFromRole(roleId: number | undefined, userId: number): void {
     if (confirm('Are you sure to delete user from this role?') && roleId) {
       this.userService.deleteUserFromRole(userId, roleId)
-        .subscribe();
+        .subscribe((data) => {}, (err: HttpErrorResponse) => {
+          alert(err.error.message);
+        });
     }
   }
 
