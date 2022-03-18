@@ -44,6 +44,22 @@ namespace UniversitySystem.Api.Controllers
             }
         }
 
+        [Authorize(Roles = "admin")]
+        [HttpGet("{roleId:int}")]
+        public async Task<IActionResult> GetRole(int roleId)
+        {
+            try
+            {
+                var roleDto = await _roleService.GetRole(roleId);
+                return Ok(roleDto);
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "An exception occured while processing the request");
+                return StatusCode(500);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateRole(NewRoleModel newRoleModel)
         {
@@ -54,6 +70,26 @@ namespace UniversitySystem.Api.Controllers
                 return Created(nameof(CreateRole), newRoleDto);
             }
             catch (RoleExistsException e)
+            {
+                return BadRequest(new {e.Message});
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "An exception occured while processing the request");
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPut("{roleId:int}")]
+        public async Task<IActionResult> EditRole(int roleId, EditRoleModel editRoleModel)
+        {
+            try
+            {
+                var editRoleDto = _mapper.Map<EditRoleDto>(editRoleModel);
+                await _roleService.EditRole(roleId, editRoleDto);
+                return Ok();
+            }
+            catch (RoleNotFoundException e)
             {
                 return BadRequest(new {e.Message});
             }

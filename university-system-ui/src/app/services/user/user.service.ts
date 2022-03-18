@@ -27,4 +27,8 @@ export class UserService {
    deleteUser(userId: number): Observable<void> {
      return this.http.delete<void>(environment.apiPath + this.userPath + userId);
    }
+
+  deleteUserFromRole(userId: number, roleId: number): Observable<void> {
+    return this.http.patch<void>(`${environment.apiPath}${this.userPath}delete-from-role/${userId}/${roleId}`, {});
+  }
 }

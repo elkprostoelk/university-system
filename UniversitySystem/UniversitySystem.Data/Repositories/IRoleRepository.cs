@@ -13,5 +13,6 @@ namespace UniversitySystem.Data.Repositories
         public Task DeleteRole(Role role);
         public Task AddRole(Role newRole);
         public Task<bool> RoleExists(string roleName);
+        public Task UpdateRole(Role role);
     }
 }

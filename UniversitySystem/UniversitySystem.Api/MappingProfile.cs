@@ -16,8 +16,13 @@ namespace UniversitySystem.Api
             CreateMap<EditUserDto, User>();
             CreateMap<User, MainUserInfoDto>();
             CreateMap<User, UserForAdminPanelDto>();
-            CreateMap<Role, RoleDto>();
+            CreateMap<User, UserDto>();
+            CreateMap<Role, RoleDto>()
+                .ForMember(m => m.Users, 
+                    x => x.Ignore());
             CreateMap<NewRoleModel, NewRoleDto>();
+            CreateMap<EditRoleModel, EditRoleDto>();
+            CreateMap<EditRoleDto, Role>();
         }
     }
 }

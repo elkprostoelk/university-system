@@ -14,6 +14,7 @@ import { AboutComponent } from './components/about/about.component';
 import { MainInfoComponent } from './components/main-info/main-info.component';
 import { TokenInterceptor } from './token-interceptor';
 import { AdminComponent } from './components/admin/admin.component';
+import { EditRoleComponent } from './components/edit-role/edit-role.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AdminComponent } from './components/admin/admin.component';
     LoginComponent,
     AboutComponent,
     MainInfoComponent,
-    AdminComponent
+    AdminComponent,
+    EditRoleComponent
   ],
   imports: [
     BrowserModule,

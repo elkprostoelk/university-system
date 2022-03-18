@@ -52,7 +52,7 @@ namespace UniversitySystem.Services
             return new UserDto
             {
                 Id = user.Id,
-                Login = user.UserName,
+                Name = user.UserName,
                 Role = role.Name
             };
         }
@@ -82,7 +82,7 @@ namespace UniversitySystem.Services
             return new UserDto
             {
                 Id = user.Id,
-                Login = user.UserName,
+                Name = user.UserName,
                 Role = String.Empty
             };
         }

@@ -18,6 +18,10 @@ export class RoleService {
      return this.http.get<RoleDto[]>(environment.apiPath + this.rolePath + 'all');
    }
 
+   getRole(id: number): Observable<RoleDto> {
+    return this.http.get<RoleDto>(environment.apiPath + this.rolePath + id);
+   }
+
    createRole(roleName: string): Observable<void> {
     return this.http.post<void>(environment.apiPath + this.rolePath, {
       roleName: roleName
@@ -27,4 +31,10 @@ export class RoleService {
    deleteRole(roleId: number): Observable<void> {
      return this.http.delete<void>(environment.apiPath + this.rolePath + roleId);
    }
+
+  editRole(id: number, value: any): Observable<void> {
+    return this.http.put<void>(`${environment.apiPath}${this.rolePath}${id}`, {
+      name: value.name
+    });
+  }
 }

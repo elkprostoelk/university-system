@@ -58,5 +58,30 @@ namespace UniversitySystem.Services
             }
             await _roleRepository.AddRole(newRole);
         }
+
+        public async Task EditRole(int id, EditRoleDto editRoleDto)
+        {
+            var role = await _roleRepository.GetRole(id);
+            if (role is null)
+            {
+                throw new RoleNotFoundException();
+            }
+
+            role.Name = editRoleDto.Name;
+            await _roleRepository.UpdateRole(role);
+        }
+
+        public async Task<RoleDto> GetRole(int roleId)
+        {
+            var role = await _roleRepository.GetRole(roleId);
+            var roleDto = _mapper.Map<RoleDto>(role);
+            roleDto.Users = role.Users.Select(u => new UserDto
+            {
+                Id = u.Id,
+                Name = u.UserName,
+                Role = roleDto.Name
+            }).ToList();
+            return roleDto;
+        }
     }
 }

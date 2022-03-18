@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace UniversitySystem.Services.Dtos
 {
     public class RoleDto
@@ -5,5 +7,7 @@ namespace UniversitySystem.Services.Dtos
         public int Id { get; set; }
         
         public string Name { get; set; }
+        
+        public ICollection<UserDto> Users { get; set; }
     }
 }

@@ -16,7 +16,9 @@ namespace UniversitySystem.Data.Repositories
         
         public async Task<Role> GetRole(int id)
         {
-            var role = await _dbContext.Roles.FirstOrDefaultAsync(r => r.Id == id);
+            var role = await _dbContext.Roles
+                .Include(r => r.Users)
+                .FirstOrDefaultAsync(r => r.Id == id);
             return role;
         }
 
@@ -45,6 +47,14 @@ namespace UniversitySystem.Data.Repositories
         public async Task<bool> RoleExists(string roleName)
         {
             return await _dbContext.Roles.AnyAsync(r => r.Name == roleName);
+        }
+
+        public async Task UpdateRole(Role role)
+        {
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            _dbContext.Roles.Update(role);
+            await _dbContext.SaveChangesAsync();
+            await transaction.CommitAsync();
         }
     }
 }
