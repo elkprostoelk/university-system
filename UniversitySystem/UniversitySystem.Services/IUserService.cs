@@ -25,5 +25,6 @@ namespace UniversitySystem.Services
         public Task<ICollection<RoleDto>> GetRoles(string login);
         public Task<MainUserInfoDto> GetMainUserInfo(int userId);
         public Task<ICollection<UserForAdminPanelDto>> GetAllUsers();
+        public Task<UserDto> ReloginUser(ReloginDto reloginDto);
     }
 }

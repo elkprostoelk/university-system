@@ -219,6 +219,22 @@ namespace UniversitySystem.Services
             return userForAdminPanelDtos;
         }
 
+        public async Task<UserDto> ReloginUser(ReloginDto reloginDto)
+        {
+            var user = await _userRepository.GetUser(_claimDecorator.Id);
+            var role = user.Roles.SingleOrDefault(r => r.Id == reloginDto.ReloginRole);
+            if (role is null)
+            {
+                throw new AccessForbiddenException();
+            }
+            return new UserDto
+            {
+                Id = _claimDecorator.Id,
+                Name = _claimDecorator.Name,
+                Role = role.Name
+            };
+        }
+
         private string HashPassword(User user, string password)
         {
             const int hashSize = 256 / 8;

@@ -71,4 +71,10 @@ export class AuthService {
       this.router.navigateByUrl('/login');
      }
    }
+
+  relogin(reloginRole: number): Observable<JwtDto> {
+    return this.http.post<JwtDto>(environment.apiPath + 'auth/relogin', {
+      reloginRole: reloginRole
+    });
+  }
 }

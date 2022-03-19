@@ -9,6 +9,8 @@ namespace UniversitySystem.Services
     {
         public int Id => Convert.ToInt32(_user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 
+        public string Name => _user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+        
         public string Role => _user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
         private readonly ClaimsPrincipal _user;

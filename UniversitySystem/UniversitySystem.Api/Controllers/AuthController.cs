@@ -42,12 +42,34 @@ namespace UniversitySystem.Api.Controllers
             {
                 var loginDto = _mapper.Map<LoginDto>(loginModel);
                 var user = await _userService.LoginUser(loginDto);
-                string token = GenerateToken(user.Name, user.Id, user.Role);
+                var token = GenerateToken(user.Name, user.Id, user.Role);
                 return Ok(new {jwt = token});
             }
             catch (UserNotFoundException)
             {
                 return NotFound();
+            }
+            catch (AccessForbiddenException)
+            {
+                return Forbid();
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "An exception occured while processing the request");
+                return StatusCode(500);
+            }
+        }
+
+        [Authorize]
+        [HttpPost("relogin")]
+        public async Task<IActionResult> Relogin(ReloginModel reloginModel)
+        {
+            try
+            {
+                var reloginDto = _mapper.Map<ReloginDto>(reloginModel);
+                var userDto = await _userService.ReloginUser(reloginDto);
+                var token = GenerateToken(userDto.Name, userDto.Id, userDto.Role);
+                return Ok(new {jwt = token});
             }
             catch (AccessForbiddenException)
             {

@@ -1,22 +1,48 @@
 <h2 class="mb-3">Main info</h2>
-
-<div class="card w-50">
-    <div class="card-body">
-      <div class="card-text" *ngIf="mainUserInfo; else loading">
-        <div class="row mb-3"><div class="col">Full name:</div> <div class="col">{{ mainUserInfo?.fullName }}</div></div>
-        <div class="row mb-3"><div class="col">First name:</div> <div class="col">{{ mainUserInfo?.firstName }}</div></div>
-        <div class="row mb-3"><div class="col">Second name:</div> <div class="col">{{ mainUserInfo?.secondName }}</div></div>
-        <div class="row mb-3"><div class="col">Last name:</div> <div class="col">{{ mainUserInfo?.lastName }}</div></div>
-        <div class="row mb-3"><div class="col">Gender:</div> <div class="col">{{ mainUserInfo?.gender }}</div></div>
-        <div class="row mb-3"><div class="col">Birth date:</div> <div class="col">{{ mainUserInfo?.birthDate | date: 'longDate'}}</div></div>
-        <div class="row mb-3"><div class="col">Registered on:</div> <div class="col">{{ mainUserInfo?.createdDate | date: 'longDate'}}</div></div>
-        <div class="row mb-3"><div class="col">Email:</div> <div class="col">{{ mainUserInfo?.email }}</div></div>
-      </div>
-      <ng-template #loading class="card-text">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
+<div class="row row-cols-1 row-cols-md-2">
+  <div class="col w-50">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-text" *ngIf="mainUserInfo; else loading">
+          <div class="row mb-3"><div class="col">Full name:</div> <div class="col">{{ mainUserInfo?.fullName }}</div></div>
+          <div class="row mb-3"><div class="col">First name:</div> <div class="col">{{ mainUserInfo?.firstName }}</div></div>
+          <div class="row mb-3"><div class="col">Second name:</div> <div class="col">{{ mainUserInfo?.secondName }}</div></div>
+          <div class="row mb-3"><div class="col">Last name:</div> <div class="col">{{ mainUserInfo?.lastName }}</div></div>
+          <div class="row mb-3"><div class="col">Gender:</div> <div class="col">{{ mainUserInfo?.gender }}</div></div>
+          <div class="row mb-3"><div class="col">Birth date:</div> <div class="col">{{ mainUserInfo?.birthDate | date: 'longDate'}}</div></div>
+          <div class="row mb-3"><div class="col">Registered on:</div> <div class="col">{{ mainUserInfo?.createdDate | date: 'longDate'}}</div></div>
+          <div class="row mb-3"><div class="col">Email:</div> <div class="col">{{ mainUserInfo?.email }}</div></div>
         </div>
-      </ng-template>
+        <ng-template #loading class="card-text">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </ng-template>
+      </div>
     </div>
+  </div>
+  <div class="col w-50">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-header mb-2">
+          <h5 class="card-title">Relogin with the other role</h5>
+        </div>
+        <div class="card-text" *ngIf="userRoles && userRoles.length > 1; else oneRole">
+          <form class="w-50" [formGroup]="reloginUserForm" (submit)="reloginUser(reloginUserForm.value)">
+            <label for="reloginRole">Choose a role to relogin with it:</label>
+            <select class="form-select mb-3" id="reloginRole" formControlName="reloginRole">
+              <option value disabled selected>Select the role</option>
+              <option value="{{role.id}}" *ngFor="let role of userRoles">{{role.name}}</option>
+            </select>
+            <button class="btn btn-primary" [disabled]="reloginUserForm.invalid">Relogin</button>
+          </form>
+        </div>
+        <ng-template class="card-text" #oneRole>
+          You cannot relogin because you have only one role!
+        </ng-template>
+      </div>
+    </div>
+  </div>
 </div>
+
 

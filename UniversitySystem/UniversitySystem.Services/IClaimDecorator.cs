@@ -4,6 +4,8 @@ namespace UniversitySystem.Services
     {
         public int Id { get; }
         
+        public string Name { get; }
+        
         public string Role { get; }
     }
 }
