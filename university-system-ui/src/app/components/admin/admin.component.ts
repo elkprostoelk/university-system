@@ -5,6 +5,7 @@ import { UserForAdminPanelDto } from 'src/app/models/userForAdminPanelDto';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { RoleService } from 'src/app/services/role/role.service';
 import { UserService } from 'src/app/services/user/user.service';
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-admin',
@@ -90,8 +91,10 @@ export class AdminComponent implements OnInit {
 
   addUserToRole(value: any): void {
     this.userService.addUserToRole(value.userToAdd, value.roleToAdd)
-      .subscribe(data => {}, (err) => {
-        alert(err.error.message);
+      .subscribe(data => {}, (err: HttpErrorResponse) => {
+        if (err.status === 400) {
+          alert(err.error.message);
+        }
       });
   }
 }
