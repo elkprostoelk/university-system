@@ -23,6 +23,7 @@ namespace UniversitySystem.Api
             CreateMap<NewRoleModel, NewRoleDto>();
             CreateMap<EditRoleModel, EditRoleDto>();
             CreateMap<EditRoleDto, Role>();
+            CreateMap<ReloginModel, ReloginDto>();
         }
     }
 }
