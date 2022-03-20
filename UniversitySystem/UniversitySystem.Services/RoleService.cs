@@ -50,7 +50,8 @@ namespace UniversitySystem.Services
         {
             var newRole = new Role
             {
-                Name = newRoleDto.RoleName
+                Name = newRoleDto.RoleName,
+                FullName = newRoleDto.FullRoleName
             };
             if (await _roleRepository.RoleExists(newRole.Name))
             {
@@ -68,6 +69,7 @@ namespace UniversitySystem.Services
             }
 
             role.Name = editRoleDto.Name;
+            role.FullName = editRoleDto.FullRoleName;
             await _roleRepository.UpdateRole(role);
         }
 
@@ -79,7 +81,8 @@ namespace UniversitySystem.Services
             {
                 Id = u.Id,
                 Name = u.UserName,
-                Role = roleDto.Name
+                Role = roleDto.Name,
+                FullRoleName = role.FullName
             }).ToList();
             return roleDto;
         }

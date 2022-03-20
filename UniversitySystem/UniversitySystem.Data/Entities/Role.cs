@@ -8,6 +8,8 @@ namespace UniversitySystem.Data.Entities
         
         public string Name { get; set; }
         
+        public string FullName { get; set; }
+        
         public ICollection<User> Users { get; set; }
     }
 }

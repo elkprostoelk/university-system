@@ -8,6 +8,8 @@ namespace UniversitySystem.Services.Dtos
         
         public string Name { get; set; }
         
+        public string FullName { get; set; }
+        
         public ICollection<UserDto> Users { get; set; }
     }
 }

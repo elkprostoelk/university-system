@@ -106,7 +106,7 @@ namespace UniversitySystem.Api
             {
                 endpoints.MapControllers();
             });
-            app.DatabaseEnsureCreated();
+            app.DatabaseEnsureCreated().Wait();
         }
     }
 }

@@ -6,5 +6,8 @@ namespace UniversitySystem.Api.Models
     {
         [Required]
         public string RoleName { get; set; }
+        
+        [Required]
+        public string FullRoleName { get; set; }
     }
 }

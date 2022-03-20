@@ -12,10 +12,13 @@ namespace UniversitySystem.Data.Entities.Configurations
             builder.Property(r => r.Name)
                 .IsRequired();
 
+            builder.Property(r => r.FullName)
+                .IsRequired();
+
             builder.HasData(
-                new Role { Id = 1, Name = "admin" },
-                new Role { Id = 2, Name = "student" },
-                new Role { Id = 3, Name = "teacher" }
+                new Role { Id = 1, Name = "admin", FullName = "Administrator" },
+                new Role { Id = 2, Name = "student", FullName = "Student" },
+                new Role { Id = 3, Name = "teacher", FullName = "Teacher" }
                 );
         }
     }

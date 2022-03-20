@@ -42,7 +42,7 @@ namespace UniversitySystem.Api.Controllers
             {
                 var loginDto = _mapper.Map<LoginDto>(loginModel);
                 var user = await _userService.LoginUser(loginDto);
-                var token = GenerateToken(user.Name, user.Id, user.Role);
+                var token = GenerateToken(user.Name, user.Id, user.Role, user.FullRoleName);
                 return Ok(new {jwt = token});
             }
             catch (UserNotFoundException)
@@ -68,7 +68,7 @@ namespace UniversitySystem.Api.Controllers
             {
                 var reloginDto = _mapper.Map<ReloginDto>(reloginModel);
                 var userDto = await _userService.ReloginUser(reloginDto);
-                var token = GenerateToken(userDto.Name, userDto.Id, userDto.Role);
+                var token = GenerateToken(userDto.Name, userDto.Id, userDto.Role, userDto.FullRoleName);
                 return Ok(new {jwt = token});
             }
             catch (AccessForbiddenException)
@@ -109,7 +109,7 @@ namespace UniversitySystem.Api.Controllers
             }
         }
 
-        private string GenerateToken(string userName, int id, string role)
+        private string GenerateToken(string userName, int id, string role, string roleName)
         {
             RSA rsa = RSA.Create();
             rsa.ImportRSAPrivateKey(
@@ -129,7 +129,8 @@ namespace UniversitySystem.Api.Controllers
                 { 
                     new Claim(ClaimTypes.NameIdentifier, id.ToString(), ClaimValueTypes.Integer64),
                     new Claim(ClaimTypes.Name, userName),
-                    new Claim(ClaimTypes.Role, role)
+                    new Claim(ClaimTypes.Role, role),
+                    new Claim(ClaimTypes.UserData, roleName)
                 },
                 notBefore: jwtDate,
                 expires: jwtDate.AddHours(24),

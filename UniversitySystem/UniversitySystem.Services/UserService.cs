@@ -2,11 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AutoMapper;
-using UniversitySystem.Data;
 using UniversitySystem.Data.Entities;
 using UniversitySystem.Data.Exceptions;
 using UniversitySystem.Data.Repositories;
@@ -53,7 +51,8 @@ namespace UniversitySystem.Services
             {
                 Id = user.Id,
                 Name = user.UserName,
-                Role = role.Name
+                Role = role.Name,
+                FullRoleName = role.FullName
             };
         }
 
@@ -83,7 +82,8 @@ namespace UniversitySystem.Services
             {
                 Id = user.Id,
                 Name = user.UserName,
-                Role = String.Empty
+                Role = String.Empty,
+                FullRoleName = String.Empty
             };
         }
 
@@ -186,7 +186,8 @@ namespace UniversitySystem.Services
                 roles = user.Roles.Select(r => new RoleDto
                 {
                     Id = r.Id,
-                    Name = r.Name
+                    Name = r.Name,
+                    FullName = r.FullName
                 }).ToList();
             }
             return roles;
@@ -213,7 +214,7 @@ namespace UniversitySystem.Services
             {
                 var dto = _mapper.Map<UserForAdminPanelDto>(u);
                 dto.FullName = string.Join(' ', u.LastName, u.FirstName, u.SecondName);
-                dto.Roles = u.Roles.Select(r => r.Name).ToList();
+                dto.Roles = u.Roles.Select(r => r.FullName).ToList();
                 return dto;
             }).ToList();
             return userForAdminPanelDtos;
@@ -231,7 +232,8 @@ namespace UniversitySystem.Services
             {
                 Id = _claimDecorator.Id,
                 Name = _claimDecorator.Name,
-                Role = role.Name
+                Role = role.Name,
+                FullRoleName = role.FullName
             };
         }
 
