@@ -2,7 +2,11 @@
     <form [formGroup]="loginForm" (submit)="login(loginForm.value)">
         <img class="mb-4" src="../../../favicon.ico" alt="" width="62">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-    
+        <div class="alert-danger mb-2" [hidden]="!loginField?.errors && !passwordField?.errors && !roleField?.errors">
+          {{logErrors(loginField)}}
+          {{logErrors(passwordField)}}
+          {{logErrors(roleField)}}
+        </div>
         <div class="form-floating">
           <input class="form-control" type="text" id="floatingInput" formControlName="login" placeholder="Your login" (change)="onLoginInput($event)">
           <label for="floatingInput">Login</label>

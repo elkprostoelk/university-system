@@ -12,6 +12,7 @@ namespace UniversitySystem.Api.Models
         [StringLength(20, MinimumLength = 8, ErrorMessage = "Password should be 8-20 symbols!")]
         public string Password { get; set; }
         
+        [Required]
         public int RoleId { get; set; }
     }
 }
