@@ -12,6 +12,7 @@
   <form class="d-grid gap-2 d-md-flex" (submit)="searchUser(searchString)">
     <input class="form-control-sm mb-3" type="text" placeholder="Search users here" #searchString>
     <button class="btn btn-sm btn-outline-success mb-3">Search user</button>
+    <button class="btn btn-sm btn-outline-danger mb-3" type="button" (click)="resetResults()">Reset search results</button>
   </form>
 </div>
 

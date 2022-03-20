@@ -17,7 +17,6 @@ export class AdminComponent implements OnInit {
   createUserForm: FormGroup
   addToRoleForm: FormGroup
   userDtos?: UserForAdminPanelDto[]
-  userDtosBuffer?: UserForAdminPanelDto[]
   roleDtos?: RoleDto[]
   constructor(
     private userService: UserService,
@@ -102,15 +101,31 @@ export class AdminComponent implements OnInit {
   searchUser(input: HTMLInputElement): void {
     let searchString: string = input.value;
     if (searchString !== '') {
-      this.userDtosBuffer = this.userDtos;
-      this.userDtos = this.userDtos?.filter(u =>
-        u.fullName.toLowerCase().includes(searchString.toLowerCase()));
-      this.userDtos?.sort((a, b) =>
-        a.fullName.localeCompare(b.fullName));
+      this.userService.getAllUsers()
+        .subscribe(data => {
+          this.userDtos = data;
+          this.userDtos.sort((a, b) =>
+            a.fullName.localeCompare(b.fullName));
+          if (searchString.match(/^[a-zA-Z0-9]*$/i)) {
+            this.userDtos = this.userDtos?.filter(u =>
+              u.userName.toLowerCase().includes(searchString.toLowerCase()));
+          }
+          else {
+            this.userDtos = this.userDtos?.filter(u =>
+              u.fullName.toLowerCase().includes(searchString.toLowerCase()));
+          }
+          this.userDtos?.sort((a, b) =>
+            a.fullName.localeCompare(b.fullName));
+        });
     }
-    else if (this.userDtosBuffer) {
-        this.userDtos = this.userDtosBuffer;
-        this.userDtosBuffer = undefined;
-    }
+  }
+
+  resetResults(): void {
+    this.userService.getAllUsers()
+      .subscribe(data => {
+        this.userDtos = data;
+        this.userDtos.sort((a, b) =>
+          a.fullName.localeCompare(b.fullName));
+      });
   }
 }
