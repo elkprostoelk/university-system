@@ -34,6 +34,7 @@ export class AuthService {
       const idClaim: string = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier';
       const nameClaim: string = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
       const roleClaim: string = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+      const roleNameClaim: string = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata';
       const expires: Date = new Date(0);
       expires.setUTCSeconds(identity['exp']);
       if (expires < new Date()) {
@@ -43,7 +44,8 @@ export class AuthService {
        return {
          id: identity[idClaim],
          name: identity[nameClaim],
-         role: identity[roleClaim]
+         role: identity[roleClaim],
+         fullRoleName: identity[roleNameClaim]
        };
      }
      return null;

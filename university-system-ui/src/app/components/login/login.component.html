@@ -18,7 +18,7 @@
         <label class="mb-3" for="userRole">Select your role to sign in</label>
         <select class="form-select mb-3" formControlName="roleId" id="userRole">
           <option value="" disabled selected>Select a role</option>
-          <option *ngFor="let role of roles$ | async" [value]="role.id">{{ role.name }}</option>
+          <option *ngFor="let role of roles$ | async" [value]="role.id">{{ role.fullName }}</option>
         </select>
         <button class="w-100 btn btn-lg btn-primary" [disabled]="loginForm.invalid">Sign in</button>
     </form>

@@ -69,7 +69,7 @@
         </select>
         <label for="roleToAdd">Select a role:</label>
         <select class="form-select mb-3" size="3" id="roleToAdd" formControlName="roleToAdd">
-          <option value="{{role.id}}" *ngFor="let role of roleDtos">{{role.name}}</option>
+          <option value="{{role.id}}" *ngFor="let role of roleDtos">{{role.fullName}}</option>
         </select>
       </div>
       <div class="modal-footer">

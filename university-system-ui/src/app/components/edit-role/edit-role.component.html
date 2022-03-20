@@ -2,9 +2,10 @@
 <form [formGroup]="editRoleForm" class="card w-50 mb-3" (submit)="editRole(editRoleForm.value)">
   <div class="card-body">
     <div class="card-text mb-3">
-      <input type="hidden">
       <label for="roleName">Role name</label>
       <input class="form-control mb-3" type="text" formControlName="name" id="roleName" value="{{(role$ | async)?.name}}">
+      <label for="fullRoleName">Full role name</label>
+      <input class="form-control mb-3" type="text" formControlName="fullRoleName" id="fullRoleName" value="{{(role$ | async)?.fullName}}">
     </div>
     <div class="card-text mb-3">
       <button class="btn btn-primary" [disabled]="editRoleForm.invalid">Edit</button>

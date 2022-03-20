@@ -35,7 +35,8 @@ export class AdminComponent implements OnInit {
         passportNumber: ['', Validators.required]
       });
       this.createRoleForm = this.builder.group({
-        roleName: ['', Validators.required]
+        roleName: ['', Validators.required],
+        fullRoleName: ['', Validators.required]
       });
       this.addToRoleForm = this.builder.group({
         userToAdd: ['', Validators.required],
@@ -60,8 +61,8 @@ export class AdminComponent implements OnInit {
   }
 
   createRole(value: any): void {
-    if (value.roleName) {
-      this.roleService.createRole(value.roleName)
+    if (value.roleName && value.fullRoleName) {
+      this.roleService.createRole(value.roleName, value.fullRoleName)
         .subscribe(data => {
           this.roleService.getAllRoles()
             .subscribe(d =>

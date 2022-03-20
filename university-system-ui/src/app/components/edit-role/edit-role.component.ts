@@ -23,7 +23,8 @@ export class EditRoleComponent implements OnInit {
     private userService: UserService,
     private roleService: RoleService) {
     this.editRoleForm = this.builder.group({
-      name: ['', Validators.required]
+      name: ['', Validators.required],
+      fullRoleName: ['', Validators.required]
     });
     this.activatedRoute.params
       .subscribe(params => {

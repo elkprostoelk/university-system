@@ -32,7 +32,7 @@
             <label for="reloginRole">Choose a role to relogin with it:</label>
             <select class="form-select mb-3" id="reloginRole" formControlName="reloginRole">
               <option value disabled selected>Select the role</option>
-              <option value="{{role.id}}" *ngFor="let role of userRoles">{{role.name}}</option>
+              <option value="{{role.id}}" *ngFor="let role of userRoles">{{role.fullName}}</option>
             </select>
             <button class="btn btn-primary" [disabled]="reloginUserForm.invalid">Relogin</button>
           </form>

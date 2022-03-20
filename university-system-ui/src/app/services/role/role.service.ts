@@ -22,9 +22,10 @@ export class RoleService {
     return this.http.get<RoleDto>(environment.apiPath + this.rolePath + id);
    }
 
-   createRole(roleName: string): Observable<void> {
+   createRole(roleName: string, fullRoleName: string): Observable<void> {
     return this.http.post<void>(environment.apiPath + this.rolePath, {
-      roleName: roleName
+      roleName: roleName,
+      fullRoleName: fullRoleName
     });
    }
 
@@ -34,7 +35,8 @@ export class RoleService {
 
   editRole(id: number, value: any): Observable<void> {
     return this.http.put<void>(`${environment.apiPath}${this.rolePath}${id}`, {
-      name: value.name
+      name: value.name,
+      fullRoleName: value.fullRoleName
     });
   }
 }
