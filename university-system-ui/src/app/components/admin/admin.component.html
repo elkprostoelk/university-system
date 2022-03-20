@@ -8,6 +8,11 @@
   <button class="btn btn-sm btn-info mb-3" type="button" data-bs-toggle="modal" data-bs-target="#addToRole">
     Add to role
   </button>
+
+  <form class="d-grid gap-2 d-md-flex" (submit)="searchUser(searchString)">
+    <input class="form-control-sm mb-3" type="text" placeholder="Search users here" #searchString>
+    <button class="btn btn-sm btn-outline-success mb-3">Search user</button>
+  </form>
 </div>
 
 <div class="modal fade" id="addUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">

@@ -17,6 +17,7 @@ export class AdminComponent implements OnInit {
   createUserForm: FormGroup
   addToRoleForm: FormGroup
   userDtos?: UserForAdminPanelDto[]
+  userDtosBuffer?: UserForAdminPanelDto[]
   roleDtos?: RoleDto[]
   constructor(
     private userService: UserService,
@@ -96,5 +97,20 @@ export class AdminComponent implements OnInit {
           alert(err.error.message);
         }
       });
+  }
+
+  searchUser(input: HTMLInputElement): void {
+    let searchString: string = input.value;
+    if (searchString !== '') {
+      this.userDtosBuffer = this.userDtos;
+      this.userDtos = this.userDtos?.filter(u =>
+        u.fullName.toLowerCase().includes(searchString.toLowerCase()));
+      this.userDtos?.sort((a, b) =>
+        a.fullName.localeCompare(b.fullName));
+    }
+    else if (this.userDtosBuffer) {
+        this.userDtos = this.userDtosBuffer;
+        this.userDtosBuffer = undefined;
+    }
   }
 }
