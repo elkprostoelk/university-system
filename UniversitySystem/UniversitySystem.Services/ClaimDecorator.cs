@@ -17,7 +17,7 @@ namespace UniversitySystem.Services
         
         public ClaimDecorator(IHttpContextAccessor httpContextAccessor)
         {
-            _user = httpContextAccessor.HttpContext.User;
+            _user = httpContextAccessor?.HttpContext?.User;
         }
     }
 }
