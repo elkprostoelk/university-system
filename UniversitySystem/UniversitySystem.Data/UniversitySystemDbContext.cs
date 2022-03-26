@@ -13,6 +13,12 @@ namespace UniversitySystem.Data
         public DbSet<Student> Students { get; set; }
         
         public DbSet<Teacher> Teachers { get; set; }
+        
+        public DbSet<Specialty> Specialties { get; set; }
+        
+        public DbSet<Faculty> Faculties { get; set; }
+        
+        public DbSet<Chair> Chairs { get; set; }
 
         public UniversitySystemDbContext(
             DbContextOptions<UniversitySystemDbContext> options) 

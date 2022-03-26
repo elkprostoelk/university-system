@@ -36,6 +36,13 @@ namespace UniversitySystem.Data.Entities.Configurations
             builder.HasMany(u => u.Roles)
                 .WithMany(r => r.Users)
                 .UsingEntity(j => j.ToTable("UserRoles"));
+
+            builder.HasOne(u => u.TeacherRole)
+                .WithOne(t => t.User)
+                .HasForeignKey<Teacher>(t => t.UserId);
+
+            builder.HasMany(u => u.StudentRoles)
+                .WithOne(s => s.User);
         }
     }
 }

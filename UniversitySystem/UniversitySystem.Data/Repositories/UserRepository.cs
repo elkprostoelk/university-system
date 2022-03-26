@@ -21,6 +21,7 @@ namespace UniversitySystem.Data.Repositories
         {
             var user = await _dbContext.Users
                 .Include(u => u.Roles)
+                .Include(u => u.StudentRoles)
                 .FirstOrDefaultAsync(u => u.Id == id);
             return user;
         }

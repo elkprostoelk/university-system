@@ -29,6 +29,12 @@ namespace UniversitySystem.Data.Entities
 
         public string PassportNumber { get; set; }
         
+        public ICollection<Student> StudentRoles { get; set; }
+        
+        public int? TeacherId { get; set; }
+        
+        public Teacher TeacherRole { get; set; }
+
         public ICollection<Role> Roles { get; set; }
     }
 }
