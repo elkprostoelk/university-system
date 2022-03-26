@@ -19,14 +19,20 @@ namespace UniversitySystem.Services
         private readonly IClaimDecorator _claimDecorator;
         private readonly IRoleRepository _roleRepository;
         private readonly IMapper _mapper;
+        private readonly IStudentRepository _studentRepository;
+        private readonly ITeacherRepository _teacherRepository;
 
         public UserService(
             IMapper mapper,
+            IStudentRepository studentRepository,
+            ITeacherRepository teacherRepository,
             IUserRepository userRepository,
             IRoleRepository roleRepository,
             IClaimDecorator claimDecorator)
         {
             _mapper = mapper;
+            _studentRepository = studentRepository;
+            _teacherRepository = teacherRepository;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _claimDecorator = claimDecorator;
@@ -157,6 +163,21 @@ namespace UniversitySystem.Services
             if (user.Roles.Count > 1)
             {
                 user.Roles.Remove(role);
+
+                switch (role.Name)
+                {
+                    case "student":
+                    {
+                        await _studentRepository.RemoveAllByUserId(user.Id);
+                        break;
+                    }
+                    case "teacher":
+                    {
+                        await _teacherRepository.RemoveAllByUserId(user.Id);
+                        break;
+                    }
+                }
+                
                 await _userRepository.UpdateUser(user);
             }
             else
