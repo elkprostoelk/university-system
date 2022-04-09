@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using UniversitySystem.Data;
+using UniversitySystem.Data.Interfaces;
 using UniversitySystem.Data.Repositories;
 using UniversitySystem.Services;
 using UniversitySystem.Services.Dtos;

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using UniversitySystem.Data.Entities;
+using UniversitySystem.Data.Interfaces;
 
 namespace UniversitySystem.Data.Repositories
 {

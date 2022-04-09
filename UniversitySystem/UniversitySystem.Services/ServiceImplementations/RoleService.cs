@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using UniversitySystem.Data.Entities;
 using UniversitySystem.Data.Exceptions;
+using UniversitySystem.Data.Interfaces;
 using UniversitySystem.Data.Repositories;
 using UniversitySystem.Services.Dtos;
 using UniversitySystem.Services.Exceptions;

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 using UniversitySystem.Data;
+using UniversitySystem.Data.Interfaces;
 using UniversitySystem.Data.Repositories;
 using UniversitySystem.Services;
 using UniversitySystem.Services.Interfaces;

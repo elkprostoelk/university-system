@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UniversitySystem.Data.Entities;
 
-namespace UniversitySystem.Data.Repositories
+namespace UniversitySystem.Data.Interfaces
 {
     public interface IRoleRepository
     {

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using UniversitySystem.Data.Entities;
 
-namespace UniversitySystem.Data.Repositories
+namespace UniversitySystem.Data.Interfaces
 {
     public interface IUserRepository
     {

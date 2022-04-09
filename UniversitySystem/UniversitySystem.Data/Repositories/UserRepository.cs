@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UniversitySystem.Data.Entities;
+using UniversitySystem.Data.Interfaces;
 
 namespace UniversitySystem.Data.Repositories
 {
