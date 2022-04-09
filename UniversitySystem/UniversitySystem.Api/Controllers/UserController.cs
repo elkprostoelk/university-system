@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 using UniversitySystem.Api.Models;
-using UniversitySystem.Data.Exceptions;
 using UniversitySystem.Services;
 using UniversitySystem.Services.Dtos;
-using UniversitySystem.Services.Exceptions;
 
 namespace UniversitySystem.Api.Controllers
 {
@@ -32,173 +27,113 @@ namespace UniversitySystem.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterUser(RegisterModel registerModel)
         {
-            try
+            var registerDto = _mapper.Map<RegisterDto>(registerModel);
+            var result = await _userService.RegisterUser(registerDto);
+            if (result.IsSuccessful)
             {
-                var registerDto = _mapper.Map<RegisterDto>(registerModel);
-                var user = await _userService.RegisterUser(registerDto);
-                return Created(nameof(RegisterUser), user);
+                return Created(nameof(RegisterUser), result.ResultObject);
             }
-            catch (UserExistsException e)
+            foreach (var (key, value) in result.Errors)
             {
-                return BadRequest(e.Message);
+                ModelState.AddModelError(key, value);
             }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
+            return BadRequest();
         }
 
         [Authorize(Roles = "admin")]
         [HttpGet("all")]
         public async Task<IActionResult> GetAllUsers()
         {
-            try
-            {
-                var allUsers = await _userService.GetAllUsers();
-                return Ok(allUsers);
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
+            var allUsers = await _userService.GetAllUsers();
+            return Ok(allUsers);
         }
 
         [Authorize]
         [HttpGet("{userId:int}")]
         public async Task<IActionResult> GetMainUserInfo(int userId)
         {
-            try
+            var result = await _userService.GetMainUserInfo(userId);
+            if (result.IsSuccessful)
             {
-                var mainUserInfoDto = await _userService.GetMainUserInfo(userId);
-                return Ok(mainUserInfoDto);
+                return Ok(result.ResultObject);
             }
-            catch (UserNotFoundException e)
+            foreach (var (key, value) in result.Errors)
             {
-                return NotFound(new {e.Message});
+                ModelState.AddModelError(key, value);
             }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
+            return BadRequest();
         }
 
         [HttpGet("roles/{login}")]
         public async Task<IActionResult> GetUserRoles(string login)
         {
-            try
-            {
-                var roles = await _userService.GetRoles(login);
-                return Ok(roles);
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
+            var roles = await _userService.GetRoles(login);
+            return Ok(roles);
         }
 
         [Authorize(Roles = "admin")]
         [HttpPatch("add-to-role/{userId:int}/{roleId:int}")]
         public async Task<IActionResult> AddToRole(int userId, int roleId)
         {
-            try
+            var result = await _userService.AddToRole(userId, roleId);
+            if (result.IsSuccessful)
             {
-                await _userService.AddToRole(userId, roleId);
                 return Ok();
             }
-            catch (UserNotFoundException e)
+            foreach (var (key, value) in result.Errors)
             {
-                return BadRequest(new {e.Message});
+                ModelState.AddModelError(key, value);
             }
-            catch (RoleNotFoundException e)
-            {
-                return BadRequest(new {e.Message});
-            }
-            catch (UserHasRoleException e)
-            {
-                return BadRequest(new {e.Message});
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
+            return BadRequest();
         }
 
         [Authorize(Roles = "admin")]
         [HttpPatch("delete-from-role/{userId:int}/{roleId:int}")]
         public async Task<IActionResult> DeleteFromRole(int userId, int roleId)
         {
-            try
+            var result = await _userService.DeleteFromRole(userId, roleId);
+            if (result.IsSuccessful)
             {
-                await _userService.DeleteFromRole(userId, roleId);
                 return NoContent();
             }
-            catch (UserNotFoundException e)
+            foreach (var (key, value) in result.Errors)
             {
-                return NotFound(new {e.Message});
+                ModelState.AddModelError(key, value);
             }
-            catch (RoleNotFoundException e)
-            {
-                return NotFound(new {e.Message});
-            }
-            catch (SingleRoleException e)
-            {
-                return BadRequest(new {e.Message});
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
+            return BadRequest();
         }
 
         [Authorize(Roles = "admin")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> EditUserInfo(int id, EditUserModel editUserModel)
         {
-            try
+            var editUserDto = _mapper.Map<EditUserDto>(editUserModel);
+            var result = await _userService.EditUser(id, editUserDto);
+            if (result.IsSuccessful)
             {
-                var editUserDto = _mapper.Map<EditUserDto>(editUserModel);
-                await _userService.EditUser(id, editUserDto);
                 return Ok();
             }
-            catch (UserNotFoundException)
+            foreach (var (key, value) in result.Errors)
             {
-                return NotFound();
+                ModelState.AddModelError(key, value);
             }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
+            return BadRequest();
         }
 
         [Authorize(Roles = "admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            try
+            var result = await _userService.DeleteUser(id);
+            if (result.IsSuccessful)
             {
-                await _userService.DeleteUser(id);
                 return NoContent();
             }
-            catch (UserNotFoundException e)
+            foreach (var (key, value) in result.Errors)
             {
-                return BadRequest(new {e.Message});
+                ModelState.AddModelError(key, value);
             }
-            catch (SelfDeletingException e)
-            {
-                return BadRequest(new {e.Message});
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
+            return BadRequest();
         }
     }
 }

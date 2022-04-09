@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Serilog;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -10,10 +9,8 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using UniversitySystem.Api.Models;
-using UniversitySystem.Data.Exceptions;
 using UniversitySystem.Services;
 using UniversitySystem.Services.Dtos;
-using UniversitySystem.Services.Exceptions;
 
 namespace UniversitySystem.Api.Controllers
 {
@@ -38,75 +35,55 @@ namespace UniversitySystem.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
-            try
+            var loginDto = _mapper.Map<LoginDto>(loginModel);
+            var result = await _userService.LoginUser(loginDto);
+            if (result.IsSuccessful && result.ResultObject is UserDto user)
             {
-                var loginDto = _mapper.Map<LoginDto>(loginModel);
-                var user = await _userService.LoginUser(loginDto);
                 var token = GenerateToken(user.Name, user.Id, user.Role, user.FullRoleName);
                 return Ok(new {jwt = token});
             }
-            catch (UserNotFoundException)
+
+            foreach (var (key, value) in result.Errors)
             {
-                return NotFound();
+                ModelState.AddModelError(key, value);
             }
-            catch (AccessForbiddenException)
-            {
-                return Forbid();
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
+            return BadRequest();
         }
 
         [Authorize]
         [HttpPost("relogin")]
         public async Task<IActionResult> Relogin(ReloginModel reloginModel)
         {
-            try
+            var reloginDto = _mapper.Map<ReloginDto>(reloginModel);
+            var result = await _userService.ReloginUser(reloginDto);
+            if (result.IsSuccessful && result.ResultObject is UserDto userDto)
             {
-                var reloginDto = _mapper.Map<ReloginDto>(reloginModel);
-                var userDto = await _userService.ReloginUser(reloginDto);
                 var token = GenerateToken(userDto.Name, userDto.Id, userDto.Role, userDto.FullRoleName);
                 return Ok(new {jwt = token});
             }
-            catch (AccessForbiddenException)
+
+            foreach (var (key, value) in result.Errors)
             {
-                return Forbid();
+                ModelState.AddModelError(key, value);
             }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
+            return BadRequest();
         }
 
         [Authorize]
         [HttpPut("change-password/{id:int}")]
         public async Task<IActionResult> ChangePassword(int id, ChangePasswordModel changePasswordModel)
         {
-            try
+            var changePasswordDto = _mapper.Map<ChangePasswordDto>(changePasswordModel);
+            var result = await _userService.ChangePassword(id, changePasswordDto);
+            if (result.IsSuccessful)
             {
-                var changePasswordDto = _mapper.Map<ChangePasswordDto>(changePasswordModel);
-                await _userService.ChangePassword(id, changePasswordDto);
                 return Ok();
             }
-            catch (UnauthorizedAccessException)
+            foreach (var (key, value) in result.Errors)
             {
-                ModelState.AddModelError("", "Only admins can change any user's password!");
-                return BadRequest();
+                ModelState.AddModelError(key, value);
             }
-            catch (WrongPasswordException e)
-            {
-                ModelState.AddModelError("", e.Message);
-                return BadRequest();
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
+            return BadRequest();
         }
 
         private string GenerateToken(string userName, int id, string role, string roleName)

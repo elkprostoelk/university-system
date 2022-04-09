@@ -6,10 +6,8 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AutoMapper;
 using UniversitySystem.Data.Entities;
-using UniversitySystem.Data.Exceptions;
 using UniversitySystem.Data.Repositories;
 using UniversitySystem.Services.Dtos;
-using UniversitySystem.Services.Exceptions;
 
 namespace UniversitySystem.Services
 {
@@ -38,36 +36,56 @@ namespace UniversitySystem.Services
             _claimDecorator = claimDecorator;
         }
 
-        public async Task<UserDto> LoginUser(LoginDto loginDto)
+        public async Task<ServiceResult> LoginUser(LoginDto loginDto)
         {
             var user = await _userRepository.GetUser(loginDto.Login);
             var hashedPassword = HashPassword(user, loginDto.Password);
+            var result = new ServiceResult();
             if (user is null)
             {
-                throw new UserNotFoundException();
+                result.IsSuccessful = false;
+                result.Errors.Add("UserNotExists", $"User {loginDto.Login} doesn't exist!");
             }
-            
-            var role = await _roleRepository.GetRole(loginDto.RoleId);
-            if (!user.Roles.Contains(role) || user.PasswordHash != hashedPassword)
+            else
             {
-                throw new AccessForbiddenException();
+                if (user.PasswordHash != hashedPassword)
+                {
+                    result.IsSuccessful = false;
+                    result.Errors.Add("WrongPassword", "Wrong password!");
+                }
+                else
+                {
+                    var role = await _roleRepository.GetRole(loginDto.RoleId);
+                    if (!user.Roles.Contains(role))
+                    {
+                        result.IsSuccessful = false;
+                        result.Errors.Add("NotInRole", $"User {loginDto.Login} does not have this role!");
+                    }
+                    else
+                    {
+                        result.IsSuccessful = true;
+                        result.ResultObject = new UserDto
+                        {
+                            Id = user.Id,
+                            Name = user.UserName,
+                            Role = role.Name,
+                            FullRoleName = role.FullName
+                        };
+                    }
+                }
             }
-            
-            return new UserDto
-            {
-                Id = user.Id,
-                Name = user.UserName,
-                Role = role.Name,
-                FullRoleName = role.FullName
-            };
+            return result;
         }
 
-        public async Task<UserDto> RegisterUser(RegisterDto registerDto)
+        public async Task<ServiceResult> RegisterUser(RegisterDto registerDto)
         {
+            var result = new ServiceResult();
             var userExists = await _userRepository.UserExists(registerDto.UserName);
             if (userExists)
             {
-                throw new UserExistsException();
+                result.IsSuccessful = false;
+                result.Errors.Add("UserExists", $"User {registerDto.UserName} already exists!");
+                return result;
             }
             var user = new User
             {
@@ -84,118 +102,161 @@ namespace UniversitySystem.Services
             var hashedPassword = HashPassword(user, registerDto.Password);
             user.PasswordHash = hashedPassword;
             await _userRepository.AddUser(user);
-            return new UserDto
+            result.ResultObject = new UserDto
             {
                 Id = user.Id,
                 Name = user.UserName,
                 Role = String.Empty,
                 FullRoleName = String.Empty
             };
+            return result;
         }
 
-        public async Task DeleteUser(int id)
+        public async Task<ServiceResult> DeleteUser(int id)
         {
+            var result = new ServiceResult();
             if (_claimDecorator.Id == id)
             {
-                throw new SelfDeletingException();
-            }
-            var user = await _userRepository.GetUser(id);
-            if (user is null)
-            {
-                throw new UserNotFoundException();
-            }
-
-            await _userRepository.DeleteUser(user);
-        }
-
-        public async Task ChangePassword(int id, ChangePasswordDto changePasswordDto)
-        {
-            var user = await _userRepository.GetUser(id);
-            if (_claimDecorator.Role != "admin" && user.Id != id)
-            {
-                throw new UnauthorizedAccessException();
-            }
-            var currentPassword = HashPassword(user, changePasswordDto.CurrentPassword);
-            if (currentPassword != user.PasswordHash)
-            {
-                throw new WrongPasswordException();
-            }
-
-            var newPasswordHash = HashPassword(user, changePasswordDto.NewPassword);
-            user.PasswordHash = newPasswordHash;
-            await _userRepository.UpdateUser(user);
-        }
-
-        public async Task AddToRole(int userId, int roleId)
-        {
-            var user = await _userRepository.GetUser(userId);
-            if (user is null)
-            {
-                throw new UserNotFoundException();
-            }
-            var role = await _roleRepository.GetRole(roleId);
-            if (role is null)
-            {
-                throw new RoleNotFoundException();
-            }
-
-            if (user.Roles.Contains(role))
-            {
-                throw new UserHasRoleException();
-            }
-            user.Roles.Add(role);
-            await _userRepository.UpdateUser(user);
-        }
-
-        public async Task DeleteFromRole(int userId, int roleId)
-        {
-            var user = await _userRepository.GetUser(userId);
-            if (user is null)
-            {
-                throw new UserNotFoundException();
-            }
-            var role = await _roleRepository.GetRole(roleId);
-            if (role is null)
-            {
-                throw new RoleNotFoundException();
-            }
-
-            if (user.Roles.Count > 1)
-            {
-                user.Roles.Remove(role);
-
-                switch (role.Name)
-                {
-                    case "student":
-                    {
-                        await _studentRepository.RemoveAllByUserId(user.Id);
-                        break;
-                    }
-                    case "teacher":
-                    {
-                        await _teacherRepository.RemoveAllByUserId(user.Id);
-                        break;
-                    }
-                }
-                
-                await _userRepository.UpdateUser(user);
+                result.IsSuccessful = false;
+                result.Errors.Add("SelfDelete", "User cannot delete himself");
             }
             else
             {
-                throw new SingleRoleException();
+                var user = await _userRepository.GetUser(id);
+                if (user is null)
+                {
+                    result.IsSuccessful = false;
+                    result.Errors.Add("UserNotExists", "User doesn't exist!");
+                }
+                else
+                {
+                    await _userRepository.DeleteUser(user);
+                }
             }
+
+            return result;
         }
 
-        public async Task EditUser(int id, EditUserDto editUserDto)
+        public async Task<ServiceResult> ChangePassword(int id, ChangePasswordDto changePasswordDto)
         {
+            var result = new ServiceResult();
+            var user = await _userRepository.GetUser(id);
+            if (_claimDecorator.Role != "admin" && user.Id != id)
+            {
+                result.IsSuccessful = false;
+                result.Errors.Add("ForbiddenAccess", "Only administrators can change other users' passwords!");
+                var currentPassword = HashPassword(user, changePasswordDto.CurrentPassword);
+                if (currentPassword != user.PasswordHash)
+                {
+                    result.IsSuccessful = false;
+                    result.Errors.Add("WrongPassword", "The current password is wrong!");
+                }
+                else
+                {
+                    var newPasswordHash = HashPassword(user, changePasswordDto.NewPassword);
+                    user.PasswordHash = newPasswordHash;
+                    await _userRepository.UpdateUser(user);
+                }
+            }
+            return result;
+        }
+
+        public async Task<ServiceResult> AddToRole(int userId, int roleId)
+        {
+            var result = new ServiceResult();
+            var user = await _userRepository.GetUser(userId);
+            if (user is null)
+            {
+                result.IsSuccessful = false;
+                result.Errors.Add("UserNotFound", "User was not found!");
+            }
+            else
+            {
+                var role = await _roleRepository.GetRole(roleId);
+                if (role is null)
+                {
+                    result.IsSuccessful = false;
+                    result.Errors.Add("RoleNotFound", "Role was not found!");
+                }
+                else
+                {
+                    if (user.Roles.Contains(role))
+                    {
+                        result.IsSuccessful = false;
+                        result.Errors.Add("UserHasRole", "User has already got this role!");
+                    }
+                    else
+                    {
+                        user.Roles.Add(role);
+                        await _userRepository.UpdateUser(user);
+                    }
+                }
+            }
+            return result;
+        }
+
+        public async Task<ServiceResult> DeleteFromRole(int userId, int roleId)
+        {
+            var result = new ServiceResult();
+            var user = await _userRepository.GetUser(userId);
+            if (user is null)
+            {
+                result.IsSuccessful = false;
+                result.Errors.Add("UserNotFound", "User was not found");
+            }
+            else
+            {
+                var role = await _roleRepository.GetRole(roleId);
+                if (role is null)
+                {
+                    result.IsSuccessful = false;
+                    result.Errors.Add("RoleNotFound", "Role was not found");
+                }
+                else
+                {
+                    if (user.Roles.Count > 1)
+                    {
+                        user.Roles.Remove(role);
+                        switch (role.Name)
+                        {
+                            case "student":
+                            {
+                                await _studentRepository.RemoveAllByUserId(user.Id);
+                                break;
+                            }
+                            case "teacher":
+                            {
+                                await _teacherRepository.RemoveAllByUserId(user.Id);
+                                break;
+                            }
+                        }
+                        await _userRepository.UpdateUser(user);
+                    }
+                    else
+                    {
+                        result.IsSuccessful = false;
+                        result.Errors.Add("SingleRole", "Role could not be deleted because it's the single role of this user");
+                    }
+                }
+            }
+            return result;
+        }
+
+        public async Task<ServiceResult> EditUser(int id, EditUserDto editUserDto)
+        {
+            var result = new ServiceResult();
             var user = await _userRepository.GetUser(id);
             if (user is null)
             {
-                throw new UserNotFoundException();
+                result.IsSuccessful = false;
+                result.Errors.Add("UserNotFound", "User was not found");
             }
-
-            user = _mapper.Map<User>(editUserDto);
-            await _userRepository.UpdateUser(user);
+            else
+            {
+                user = _mapper.Map<User>(editUserDto);
+                await _userRepository.UpdateUser(user);
+            }
+            return result;
         }
 
         public async Task<ICollection<RoleDto>> GetRoles(string login)
@@ -214,18 +275,28 @@ namespace UniversitySystem.Services
             return roles;
         }
 
-        public async Task<MainUserInfoDto> GetMainUserInfo(int userId)
+        public async Task<ServiceResult> GetMainUserInfo(int userId)
         {
+            var result = new ServiceResult();
             var user = await _userRepository.GetUser(userId);
-            var mainUserInfoDto = _mapper.Map<MainUserInfoDto>(user);
-            mainUserInfoDto.FullName = string.Join(' ', user.FirstName, user.SecondName, user.LastName);
-            mainUserInfoDto.Gender = user.Gender switch
+            if (user is null)
             {
-                0 => "Male",
-                1 => "Female",
-                _ => "n/a"
-            };
-            return mainUserInfoDto;
+                result.IsSuccessful = false;
+                result.Errors.Add("UserNotExists", "User does not exist!");
+            }
+            else
+            {
+                var mainUserInfoDto = _mapper.Map<MainUserInfoDto>(user);
+                mainUserInfoDto.FullName = string.Join(' ', user.FirstName, user.SecondName, user.LastName);
+                mainUserInfoDto.Gender = user.Gender switch
+                {
+                    0 => "Male",
+                    1 => "Female",
+                    _ => "n/a"
+                };
+                result.ResultObject = mainUserInfoDto;
+            }
+            return result;
         }
 
         public async Task<ICollection<UserForAdminPanelDto>> GetAllUsers()
@@ -241,21 +312,25 @@ namespace UniversitySystem.Services
             return userForAdminPanelDtos;
         }
 
-        public async Task<UserDto> ReloginUser(ReloginDto reloginDto)
+        public async Task<ServiceResult> ReloginUser(ReloginDto reloginDto)
         {
             var user = await _userRepository.GetUser(_claimDecorator.Id);
             var role = user.Roles.SingleOrDefault(r => r.Id == reloginDto.ReloginRole);
+            var result = new ServiceResult();
             if (role is null)
             {
-                throw new AccessForbiddenException();
+                result.IsSuccessful = false;
+                result.Errors.Add("NotInRole", $"User {user.UserName} does not have this role!");
+                return result;
             }
-            return new UserDto
+            result.ResultObject = new UserDto
             {
                 Id = _claimDecorator.Id,
                 Name = _claimDecorator.Name,
                 Role = role.Name,
                 FullRoleName = role.FullName
             };
+            return result;
         }
 
         private string HashPassword(User user, string password)

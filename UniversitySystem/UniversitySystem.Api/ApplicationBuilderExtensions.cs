@@ -40,9 +40,9 @@ namespace UniversitySystem.Api
                         PassportNumber = "000000000",
                         Password = "THINKY7teeth"
                     };
-                    var admin = await userService.RegisterUser(adminUserDto);
+                    var admin = (UserDto)(await userService.RegisterUser(adminUserDto)).ResultObject;
                     await userService.AddToRole(admin.Id, 1);
-                    Log.Information($"User account {admin.Name} was successfully initialized.");
+                    Log.Information("User account \"admin\" was successfully initialized");
                 }
             }
         }

@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 using UniversitySystem.Api.Models;
 using UniversitySystem.Data.Exceptions;
 using UniversitySystem.Services;
@@ -32,32 +29,16 @@ namespace UniversitySystem.Api.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetAllRoles()
         {
-            try
-            {
-                var roleDtos = await _roleService.GetAllRoles();
-                return Ok(roleDtos);
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
+            var roleDtos = await _roleService.GetAllRoles(); 
+            return Ok(roleDtos);
         }
 
         [Authorize(Roles = "admin")]
         [HttpGet("{roleId:int}")]
         public async Task<IActionResult> GetRole(int roleId)
         {
-            try
-            {
-                var roleDto = await _roleService.GetRole(roleId);
-                return Ok(roleDto);
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
+            var roleDto = await _roleService.GetRole(roleId);
+            return Ok(roleDto);
         }
 
         [HttpPost]
@@ -73,11 +54,6 @@ namespace UniversitySystem.Api.Controllers
             {
                 return BadRequest(new {e.Message});
             }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
-            }
         }
 
         [HttpPut("{roleId:int}")]
@@ -92,11 +68,6 @@ namespace UniversitySystem.Api.Controllers
             catch (RoleNotFoundException e)
             {
                 return BadRequest(new {e.Message});
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
             }
         }
 
@@ -115,11 +86,6 @@ namespace UniversitySystem.Api.Controllers
             catch (AdminRoleDeletingException e)
             {
                 return BadRequest(new {e.Message});
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "An exception occured while processing the request");
-                return StatusCode(500);
             }
         }
     }
