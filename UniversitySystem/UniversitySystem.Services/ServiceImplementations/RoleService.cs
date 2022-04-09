@@ -7,8 +7,9 @@ using UniversitySystem.Data.Exceptions;
 using UniversitySystem.Data.Repositories;
 using UniversitySystem.Services.Dtos;
 using UniversitySystem.Services.Exceptions;
+using UniversitySystem.Services.Interfaces;
 
-namespace UniversitySystem.Services
+namespace UniversitySystem.Services.ServiceImplementations
 {
     public class RoleService : IRoleService
     {

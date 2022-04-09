@@ -8,6 +8,8 @@ using UniversitySystem.Data;
 using UniversitySystem.Data.Repositories;
 using UniversitySystem.Services;
 using UniversitySystem.Services.Dtos;
+using UniversitySystem.Services.Interfaces;
+using UniversitySystem.Services.ServiceImplementations;
 
 namespace UniversitySystem.Api
 {

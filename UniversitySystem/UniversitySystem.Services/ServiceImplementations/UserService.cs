@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using UniversitySystem.Data.Entities;
 using UniversitySystem.Data.Repositories;
 using UniversitySystem.Services.Dtos;
+using UniversitySystem.Services.Interfaces;
 
-namespace UniversitySystem.Services
+namespace UniversitySystem.Services.ServiceImplementations
 {
     public class UserService : IUserService
     {

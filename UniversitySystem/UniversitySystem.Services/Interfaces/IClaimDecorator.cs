@@ -1,4 +1,4 @@
-namespace UniversitySystem.Services
+namespace UniversitySystem.Services.Interfaces
 {
     public interface IClaimDecorator
     {

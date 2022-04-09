@@ -3,8 +3,9 @@ using AutoMapper;
 using UniversitySystem.Data.Entities;
 using UniversitySystem.Data.Repositories;
 using UniversitySystem.Services.Dtos;
+using UniversitySystem.Services.Interfaces;
 
-namespace UniversitySystem.Services
+namespace UniversitySystem.Services.ServiceImplementations
 {
     public class StudentService : IStudentService
     {

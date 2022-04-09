@@ -7,6 +7,7 @@ using UniversitySystem.Data.Exceptions;
 using UniversitySystem.Services;
 using UniversitySystem.Services.Dtos;
 using UniversitySystem.Services.Exceptions;
+using UniversitySystem.Services.Interfaces;
 
 namespace UniversitySystem.Api.Controllers
 {

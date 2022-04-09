@@ -2,8 +2,9 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using UniversitySystem.Services.Interfaces;
 
-namespace UniversitySystem.Services
+namespace UniversitySystem.Services.ServiceImplementations
 {
     public class ClaimDecorator : IClaimDecorator
     {

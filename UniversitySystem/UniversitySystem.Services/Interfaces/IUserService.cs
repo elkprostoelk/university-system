@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using UniversitySystem.Services.Dtos;
 
-namespace UniversitySystem.Services
+namespace UniversitySystem.Services.Interfaces
 {
     public interface IUserService
     {

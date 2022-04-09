@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using UniversitySystem.Api.Models;
 using UniversitySystem.Services;
 using UniversitySystem.Services.Dtos;
+using UniversitySystem.Services.Interfaces;
 
 namespace UniversitySystem.Api.Controllers
 {
