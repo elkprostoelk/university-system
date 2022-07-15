@@ -26,7 +26,7 @@ namespace UniversitySystem.Data.Repositories
 
         public async Task AddUser(User user)
         {
-            using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync();
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
             await transaction.CommitAsync();
