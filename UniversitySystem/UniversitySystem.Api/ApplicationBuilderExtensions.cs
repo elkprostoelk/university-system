@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using UniversitySystem.Data;
 using UniversitySystem.Data.Interfaces;
-using UniversitySystem.Data.Repositories;
-using UniversitySystem.Services;
 using UniversitySystem.Services.Dtos;
 using UniversitySystem.Services.Interfaces;
 using UniversitySystem.Services.ServiceImplementations;
@@ -16,6 +17,40 @@ namespace UniversitySystem.Api
 {
     public static class ApplicationBuilderExtensions
     {
+        public static void ConfigureApp(this IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseCors(b => b
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin());
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => 
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "UniversitySystem.Api v1"));
+            }
+
+            app.UseExceptionHandler(a => a.Run(async context =>
+            {
+                var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+                var exception = exceptionHandlerPathFeature!.Error;
+                Log.Fatal(exception!, "An exception occured while processing the request");
+                context.Response.StatusCode = 500;
+                await context.Response.WriteAsJsonAsync(new {error = exception.Message});
+            }));
+            app.UseHttpsRedirection();
+            
+            app.UseAuthentication();
+            app.UseRouting();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+        
         public static async Task DatabaseEnsureCreated(this IApplicationBuilder app)
         {
             var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();

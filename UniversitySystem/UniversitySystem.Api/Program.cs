@@ -1,57 +1,41 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Serilog;
 using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
+using UniversitySystem.Api;
 
-namespace UniversitySystem.Api
-{
-    public class Program
-    {
-        public static void Main(string[] args)
+var builder = WebApplication.CreateBuilder(args);
+
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+var appConfiguration = new ConfigurationBuilder()
+    .AddJsonFile($"appsettings.{environment}.json", optional: false)
+    .Build();
+
+var logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.MSSqlServer(
+        connectionString: appConfiguration.GetConnectionString("LoggerConnection"),
+        sinkOptions: new MSSqlServerSinkOptions
         {
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            var appConfiguration = new ConfigurationBuilder()
-                .AddJsonFile($"appsettings.{environment}.json", optional: false)
-                .Build();
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console()
-                .WriteTo.MSSqlServer(
-                    connectionString: appConfiguration.GetConnectionString("LoggerConnection"),
-                    sinkOptions: new MSSqlServerSinkOptions
-                    {
-                        TableName = "Logger",
-                        AutoCreateSqlTable = true,
-                        BatchPeriod = TimeSpan.FromSeconds(5)
-                    },
-                    restrictedToMinimumLevel: LogEventLevel.Warning)
-                .CreateLogger();
+            TableName = "Logger",
+            AutoCreateSqlTable = true,
+            BatchPeriod = TimeSpan.FromSeconds(5)
+        },
+        restrictedToMinimumLevel: LogEventLevel.Warning)
+    .CreateLogger();
 
-            Log.Information("Starting up!");
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
-            try
-            {
-                CreateHostBuilder(args).Build().Run();
-                Log.Information("Stopped cleanly");
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "An unhandled exception occured");
-            }
-            finally
-            {
-                Log.CloseAndFlush();
-            }
-        }
+builder.Services.ConfigureServices(appConfiguration);
+builder.Services.AddRsaAuthentication(appConfiguration);
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .UseSerilog()
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
-}
+var app = builder.Build();
+
+app.ConfigureApp(app.Environment);
+await app.DatabaseEnsureCreated();
+
+await app.RunAsync();
