@@ -7,7 +7,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using UniversitySystem.Data.Entities;
 using UniversitySystem.Data.Interfaces;
-using UniversitySystem.Data.Repositories;
 using UniversitySystem.Services.Dtos;
 using UniversitySystem.Services.Interfaces;
 
@@ -347,7 +346,7 @@ namespace UniversitySystem.Services.ServiceImplementations
             else
             {
                 salt = new byte[hashSize];
-                using (var rng = new RNGCryptoServiceProvider())
+                using (var rng = RandomNumberGenerator.Create())
                 {
                     rng.GetNonZeroBytes(salt);
                 }
