@@ -24,7 +24,7 @@ var logger = new LoggerConfiguration()
             AutoCreateSqlTable = true,
             BatchPeriod = TimeSpan.FromSeconds(5)
         },
-        restrictedToMinimumLevel: LogEventLevel.Warning)
+        restrictedToMinimumLevel: LogEventLevel.Error)
     .CreateLogger();
 
 builder.Logging.ClearProviders();
