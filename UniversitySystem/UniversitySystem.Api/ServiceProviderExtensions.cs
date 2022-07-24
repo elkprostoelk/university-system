@@ -75,6 +75,7 @@ namespace UniversitySystem.Api
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<ITeacherService, TeacherService>();
 
+            services.AddCors();
             services.AddMvc();
             services.AddControllers();
             services.AddSwaggerGen(c =>
