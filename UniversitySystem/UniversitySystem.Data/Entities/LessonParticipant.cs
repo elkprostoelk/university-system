@@ -6,7 +6,7 @@ namespace UniversitySystem.Data.Entities
         
         public Lesson Lesson { get; set; }
         
-        public long ParticipantId { get; set; }
+        public int ParticipantId { get; set; }
         
         public Student Participant { get; set; }
         
