@@ -5,7 +5,7 @@ namespace UniversitySystem.Data.Interfaces
 {
     public interface ITeacherRepository
     {
-        public Task RemoveAllByUserId(int userId);
+        public Task RemoveAllByUserId(long userId);
         public Task AddTeacher(Teacher newTeacher);
     }
 }

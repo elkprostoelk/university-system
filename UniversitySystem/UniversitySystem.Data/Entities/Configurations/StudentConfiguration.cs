@@ -29,8 +29,8 @@ namespace UniversitySystem.Data.Entities.Configurations
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(s => s.User)
-                .WithMany(u => u.StudentRoles)
-                .HasForeignKey(s => s.UserId)
+                .WithOne(u => u.StudentRole)
+                .HasForeignKey<Student>(s => s.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

@@ -68,12 +68,14 @@ namespace UniversitySystem.Api
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<ITeacherRepository, TeacherRepository>();
+            services.AddScoped<ILessonRepository, LessonRepository>();
 
             services.AddScoped<IClaimDecorator, ClaimDecorator>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<ITeacherService, TeacherService>();
+            services.AddScoped<ILessonService, LessonService>();
 
             services.AddCors();
             services.AddMvc();

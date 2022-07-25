@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UniversitySystem.Data.Enums;
 
 namespace UniversitySystem.Data.Entities
@@ -20,5 +21,7 @@ namespace UniversitySystem.Data.Entities
         public int UserId { get; set; }
         
         public User User { get; set; }
+        
+        public ICollection<Lesson> Lessons { get; set; }
     }
 }

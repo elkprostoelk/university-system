@@ -15,7 +15,7 @@ namespace UniversitySystem.Data.Repositories
             _dbContext = dbContext;
         }
         
-        public async Task RemoveAllByUserId(int userId)
+        public async Task RemoveAllByUserId(long userId)
         {
             await using var transaction = await _dbContext.Database.BeginTransactionAsync();
             var teacherEntitiesToRemove = await _dbContext.Teachers

@@ -5,7 +5,7 @@ namespace UniversitySystem.Data.Entities
 {
     public class User
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string UserName { get; set; }
 
@@ -29,12 +29,16 @@ namespace UniversitySystem.Data.Entities
 
         public string PassportNumber { get; set; }
         
-        public ICollection<Student> StudentRoles { get; set; }
+        public int? StudentId { get; set; }
+        
+        public Student StudentRole { get; set; }
         
         public int? TeacherId { get; set; }
         
         public Teacher TeacherRole { get; set; }
 
         public ICollection<Role> Roles { get; set; }
+        
+        public string FullName => $"{FirstName[0]}. {LastName}";
     }
 }

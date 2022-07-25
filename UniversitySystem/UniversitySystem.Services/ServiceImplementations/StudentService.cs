@@ -29,7 +29,7 @@ namespace UniversitySystem.Services.ServiceImplementations
             var newStudent = _mapper.Map<Student>(newStudentDto);
             var user = await _userRepository.GetUser(newStudentDto.UserId);
             await _studentRepository.AddStudent(newStudent);
-            user.StudentRoles.Add(newStudent);
+            user.StudentRole = newStudent;
             await _userRepository.UpdateUser(user);
         }
     }

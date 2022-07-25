@@ -87,7 +87,7 @@ namespace UniversitySystem.Api.Controllers
             return BadRequest();
         }
 
-        private string GenerateToken(string userName, int id, string role, string roleName)
+        private string GenerateToken(string userName, long id, string role, string roleName)
         {
             RSA rsa = RSA.Create();
             rsa.ImportRSAPrivateKey(

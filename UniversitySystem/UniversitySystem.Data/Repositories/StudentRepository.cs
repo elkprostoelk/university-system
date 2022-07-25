@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace UniversitySystem.Data.Repositories
             _dbContext = dbContext;
         }
         
-        public async Task RemoveAllByUserId(int userId)
+        public async Task RemoveAllByUserId(long userId)
         {
             await using var transaction = await _dbContext.Database.BeginTransactionAsync();
             var studentEntitiesToRemove = await _dbContext.Students
@@ -32,5 +33,10 @@ namespace UniversitySystem.Data.Repositories
             await _dbContext.SaveChangesAsync();
             await transaction.CommitAsync();
         }
+
+        public async Task<ICollection<Student>> GetStudents(ICollection<int> studentsIds) => 
+            await _dbContext.Students
+                .Where(u => studentsIds.Contains(u.Id))
+                .ToListAsync();
     }
 }

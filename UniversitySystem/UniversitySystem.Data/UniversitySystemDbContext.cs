@@ -19,6 +19,7 @@ namespace UniversitySystem.Data
         public DbSet<Faculty> Faculties { get; set; }
         
         public DbSet<Chair> Chairs { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
 
         public UniversitySystemDbContext(
             DbContextOptions<UniversitySystemDbContext> options) 

@@ -10,17 +10,17 @@ namespace UniversitySystem.Services.Interfaces
 
         public Task<ServiceResult> RegisterUser(RegisterDto registerDto);
         
-        public Task<ServiceResult> DeleteUser(int id);
+        public Task<ServiceResult> DeleteUser(long id);
         
-        public Task<ServiceResult> ChangePassword(int id, ChangePasswordDto changePasswordDto);
+        public Task<ServiceResult> ChangePassword(long id, ChangePasswordDto changePasswordDto);
         
-        public Task<ServiceResult> AddToRole(int userId, int roleId);
+        public Task<ServiceResult> AddToRole(long userId, int roleId);
         
-        public Task<ServiceResult> DeleteFromRole(int userId, int roleId);
+        public Task<ServiceResult> DeleteFromRole(long userId, int roleId);
         
-        public Task<ServiceResult> EditUser(int id, EditUserDto editUserDto);
+        public Task<ServiceResult> EditUser(long id, EditUserDto editUserDto);
         public Task<ICollection<RoleDto>> GetRoles(string login);
-        public Task<ServiceResult> GetMainUserInfo(int userId);
+        public Task<ServiceResult> GetMainUserInfo(long userId);
         public Task<ICollection<UserForAdminPanelDto>> GetAllUsers();
         public Task<ServiceResult> ReloginUser(ReloginDto reloginDto);
     }
