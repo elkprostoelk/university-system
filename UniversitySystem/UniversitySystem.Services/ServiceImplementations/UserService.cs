@@ -113,7 +113,7 @@ namespace UniversitySystem.Services.ServiceImplementations
             return result;
         }
 
-        public async Task<ServiceResult> DeleteUser(int id)
+        public async Task<ServiceResult> DeleteUser(long id)
         {
             var result = new ServiceResult();
             if (_claimDecorator.Id == id)
@@ -138,7 +138,7 @@ namespace UniversitySystem.Services.ServiceImplementations
             return result;
         }
 
-        public async Task<ServiceResult> ChangePassword(int id, ChangePasswordDto changePasswordDto)
+        public async Task<ServiceResult> ChangePassword(long id, ChangePasswordDto changePasswordDto)
         {
             var result = new ServiceResult();
             var user = await _userRepository.GetUser(id);
@@ -162,7 +162,7 @@ namespace UniversitySystem.Services.ServiceImplementations
             return result;
         }
 
-        public async Task<ServiceResult> AddToRole(int userId, int roleId)
+        public async Task<ServiceResult> AddToRole(long userId, int roleId)
         {
             var result = new ServiceResult();
             var user = await _userRepository.GetUser(userId);
@@ -196,7 +196,7 @@ namespace UniversitySystem.Services.ServiceImplementations
             return result;
         }
 
-        public async Task<ServiceResult> DeleteFromRole(int userId, int roleId)
+        public async Task<ServiceResult> DeleteFromRole(long userId, int roleId)
         {
             var result = new ServiceResult();
             var user = await _userRepository.GetUser(userId);
@@ -243,7 +243,7 @@ namespace UniversitySystem.Services.ServiceImplementations
             return result;
         }
 
-        public async Task<ServiceResult> EditUser(int id, EditUserDto editUserDto)
+        public async Task<ServiceResult> EditUser(long id, EditUserDto editUserDto)
         {
             var result = new ServiceResult();
             var user = await _userRepository.GetUser(id);
@@ -276,7 +276,7 @@ namespace UniversitySystem.Services.ServiceImplementations
             return roles;
         }
 
-        public async Task<ServiceResult> GetMainUserInfo(int userId)
+        public async Task<ServiceResult> GetMainUserInfo(long userId)
         {
             var result = new ServiceResult();
             var user = await _userRepository.GetUser(userId);

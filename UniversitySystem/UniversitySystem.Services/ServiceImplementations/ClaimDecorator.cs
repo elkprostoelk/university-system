@@ -8,7 +8,7 @@ namespace UniversitySystem.Services.ServiceImplementations
 {
     public class ClaimDecorator : IClaimDecorator
     {
-        public int Id => Convert.ToInt32(_user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        public long Id => Convert.ToInt64(_user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 
         public string Name => _user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
         

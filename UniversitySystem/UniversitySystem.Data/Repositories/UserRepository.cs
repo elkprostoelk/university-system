@@ -15,11 +15,11 @@ namespace UniversitySystem.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<User> GetUser(int id)
+        public async Task<User> GetUser(long id)
         {
             var user = await _dbContext.Users
                 .Include(u => u.Roles)
-                .Include(u => u.StudentRoles)
+                .Include(u => u.StudentRole)
                 .FirstOrDefaultAsync(u => u.Id == id);
             return user;
         }

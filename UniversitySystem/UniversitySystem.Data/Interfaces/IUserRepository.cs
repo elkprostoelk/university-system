@@ -8,7 +8,7 @@ namespace UniversitySystem.Data.Interfaces
     {
         public Task<User> GetUser(string login);
 
-        public Task<User> GetUser(int id);
+        public Task<User> GetUser(long id);
         
         public Task AddUser(User user);
         

@@ -2,7 +2,7 @@ namespace UniversitySystem.Services.Interfaces
 {
     public interface IClaimDecorator
     {
-        public int Id { get; }
+        public long Id { get; }
         
         public string Name { get; }
         

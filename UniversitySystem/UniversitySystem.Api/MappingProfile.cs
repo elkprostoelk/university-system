@@ -28,6 +28,16 @@ namespace UniversitySystem.Api
             CreateMap<NewStudentDto, Student>();
             CreateMap<NewTeacherModel, NewTeacherDto>();
             CreateMap<NewTeacherDto, Teacher>();
+            CreateMap<NewLessonModel, NewLessonDTO>();
+            CreateMap<EditLessonModel, EditLessonDTO>();
+            CreateMap<Lesson, CompactLessonDTO>()
+                .ForMember(dto => dto.TeacherName,
+                    opt => opt.MapFrom(
+                        l => l.Teacher.User.FullName));
+            CreateMap<Lesson, LessonDTO>()
+                .ForMember(dto => dto.TeacherName,
+                    opt => opt.MapFrom(
+                        l => l.Teacher.User.FullName));
         }
     }
 }

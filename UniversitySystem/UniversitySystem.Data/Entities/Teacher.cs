@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UniversitySystem.Data.Enums;
 
 namespace UniversitySystem.Data.Entities
@@ -17,8 +18,10 @@ namespace UniversitySystem.Data.Entities
         
         public Chair Chair { get; set; }
         
-        public int UserId { get; set; }
+        public long UserId { get; set; }
         
         public User User { get; set; }
+        
+        public ICollection<Lesson> Lessons { get; set; }
     }
 }

@@ -17,6 +17,6 @@ namespace UniversitySystem.Api.Models
         public int ChairId { get; set; }
         
         [Required]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
     }
 }

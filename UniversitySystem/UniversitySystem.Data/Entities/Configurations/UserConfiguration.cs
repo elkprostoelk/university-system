@@ -41,8 +41,9 @@ namespace UniversitySystem.Data.Entities.Configurations
                 .WithOne(t => t.User)
                 .HasForeignKey<Teacher>(t => t.UserId);
 
-            builder.HasMany(u => u.StudentRoles)
-                .WithOne(s => s.User);
+            builder.HasOne(u => u.StudentRole)
+                .WithOne(s => s.User)
+                .HasForeignKey<User>(u => u.StudentId);
         }
     }
 }
