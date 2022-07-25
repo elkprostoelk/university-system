@@ -22,6 +22,6 @@ namespace UniversitySystem.Api.Models
         public int SpecialtyId { get; set; }
         
         [Required]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
     }
 }

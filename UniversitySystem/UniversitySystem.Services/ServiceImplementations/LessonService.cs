@@ -151,7 +151,7 @@ namespace UniversitySystem.Services.ServiceImplementations
             }
             else
             {
-                var user = await _userRepository.GetUser((int)userId);
+                var user = await _userRepository.GetUser(userId);
                 if (user is null)
                 {
                     result.IsSuccessful = false;

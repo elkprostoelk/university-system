@@ -15,6 +15,6 @@ namespace UniversitySystem.Services.Dtos
         
         public int SpecialtyId { get; set; }
         
-        public int UserId { get; set; }
+        public long UserId { get; set; }
     }
 }

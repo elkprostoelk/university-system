@@ -18,7 +18,7 @@ namespace UniversitySystem.Data.Entities
         
         public Chair Chair { get; set; }
         
-        public int UserId { get; set; }
+        public long UserId { get; set; }
         
         public User User { get; set; }
         

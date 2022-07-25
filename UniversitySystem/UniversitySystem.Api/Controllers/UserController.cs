@@ -50,8 +50,8 @@ namespace UniversitySystem.Api.Controllers
         }
 
         [Authorize]
-        [HttpGet("{userId:int}")]
-        public async Task<IActionResult> GetMainUserInfo(int userId)
+        [HttpGet("{userId:long}")]
+        public async Task<IActionResult> GetMainUserInfo(long userId)
         {
             var result = await _userService.GetMainUserInfo(userId);
             if (result.IsSuccessful)
@@ -73,8 +73,8 @@ namespace UniversitySystem.Api.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPatch("add-to-role/{userId:int}/{roleId:int}")]
-        public async Task<IActionResult> AddToRole(int userId, int roleId)
+        [HttpPatch("add-to-role/{userId:long}/{roleId:int}")]
+        public async Task<IActionResult> AddToRole(long userId, int roleId)
         {
             var result = await _userService.AddToRole(userId, roleId);
             if (result.IsSuccessful)
@@ -89,8 +89,8 @@ namespace UniversitySystem.Api.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPatch("delete-from-role/{userId:int}/{roleId:int}")]
-        public async Task<IActionResult> DeleteFromRole(int userId, int roleId)
+        [HttpPatch("delete-from-role/{userId:long}/{roleId:int}")]
+        public async Task<IActionResult> DeleteFromRole(long userId, int roleId)
         {
             var result = await _userService.DeleteFromRole(userId, roleId);
             if (result.IsSuccessful)
