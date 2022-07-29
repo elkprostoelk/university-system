@@ -89,7 +89,7 @@ namespace UniversitySystem.Api.Controllers
 
         private string GenerateToken(string userName, long id, string role, string roleName)
         {
-            RSA rsa = RSA.Create();
+            var rsa = RSA.Create();
             rsa.ImportRSAPrivateKey(
                 source: Convert.FromBase64String(_configuration["Jwt:PrivateKey"]),
                 bytesRead: out _); 
@@ -98,12 +98,12 @@ namespace UniversitySystem.Api.Controllers
                 key: new RsaSecurityKey(rsa),
                 algorithm: SecurityAlgorithms.RsaSha256
             );
-            DateTime jwtDate = DateTime.Now;
+            var jwtDate = DateTime.Now;
 
             var jwt = new JwtSecurityToken(
                 audience: "university-system",
                 issuer: "university-system",
-                claims: new Claim[] 
+                claims: new[] 
                 { 
                     new Claim(ClaimTypes.NameIdentifier, id.ToString(), ClaimValueTypes.Integer64),
                     new Claim(ClaimTypes.Name, userName),
@@ -115,7 +115,7 @@ namespace UniversitySystem.Api.Controllers
                 signingCredentials: signingCredentials
             );
 
-            string token = new JwtSecurityTokenHandler().WriteToken(jwt);
+            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
             return token;
         }
     }
